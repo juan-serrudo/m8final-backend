@@ -3,13 +3,10 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './configurations/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { SizesController } from './modules/sizes/sizes.controller';
-import { SizesService } from './modules/sizes/sizes.service';
+import { PasswordManagerController } from './modules/password-manager/password-manager.controller';
+import { PasswordManagerService } from './modules/password-manager/password-manager.service';
 import { databaseProviders } from './providers/database.providers';
-import { sizesProviders } from './providers/sizes.providers';
-import { typesArticlesProviders } from './providers/types-articles.providers';
-import { TypesArticlesService } from './modules/types-articles/types-articles.service';
-import { TypesArticlesSController } from './modules/types-articles/types-articles.controller';
+import { passwordManagerProviders } from './providers/password-manager.providers';
 
 @Module({
   imports: [
@@ -21,20 +18,17 @@ import { TypesArticlesSController } from './modules/types-articles/types-article
   ],
   controllers: [
     AppController,
-    SizesController,
-    TypesArticlesSController,
+    PasswordManagerController,
   ],
   providers: [
     AppService,
-    SizesService,
-    TypesArticlesService,
+    PasswordManagerService,
     ...databaseProviders,
-    ...sizesProviders,
-    ...typesArticlesProviders,
+    ...passwordManagerProviders,
   ],
   exports: [
     ...databaseProviders,
-    ...typesArticlesProviders,
+    ...passwordManagerProviders,
   ],
 })
 

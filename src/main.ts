@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { VersioningType } from '@nestjs/common';
+import { VersioningType, ValidationPipe } from '@nestjs/common';
 import { join } from 'path';
 import { bold } from 'chalk';
 import { json, urlencoded } from 'express';
@@ -31,8 +31,15 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.use(json({ limit: envService.get('appMaxSize') }));
-  app.use(urlencoded({ limit: envService.get('appMaxSize'), extended: true }));
+  app.use(json({ limit: envService.get('appMaxSize') || '10mb' }));
+  app.use(urlencoded({ limit: envService.get('appMaxSize') || '10mb', extended: true }));
+
+  // Global validation pipe
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    transform: true,
+  }));
 
   // Interceptors globales
   app.useGlobalInterceptors(new ResponseFormatInterceptor());

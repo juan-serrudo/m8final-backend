@@ -1,98 +1,177 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Gestor de Contraseñas - Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Descripción
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Sistema de gestión de contraseñas seguro desarrollado con NestJS, que implementa técnicas de criptografía avanzada para el almacenamiento seguro de credenciales.
 
-## Description
+## Características de Seguridad
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **Cifrado AES**: Las contraseñas se cifran usando el algoritmo AES antes de ser almacenadas
+- **Hash bcrypt**: Las claves maestras se hashean con bcrypt (12 rounds) para máxima seguridad
+- **Verificación de clave maestra**: Todas las operaciones sensibles requieren verificación de la clave maestra
+- **Almacenamiento seguro**: No se almacenan contraseñas en texto plano
+- **Base de datos SQLite**: Persistencia segura con TypeORM
 
-## Project setup
+## Tecnologías Utilizadas
+
+- **NestJS 11**: Framework de Node.js
+- **TypeORM**: ORM para base de datos
+- **SQLite**: Base de datos local
+- **bcryptjs**: Hashing de claves maestras
+- **crypto-js**: Cifrado AES de contraseñas
+- **Swagger**: Documentación de API
+- **class-validator**: Validación de DTOs
+
+## Instalación
 
 ```bash
-$ yarn install
+# Instalar dependencias
+npm install
+
+# Desarrollo
+npm run start:dev
+
+# Producción
+npm run build
+npm run start:prod
 ```
 
-## Compile and run the project
+## Variables de Entorno
 
 ```bash
-# development
-$ yarn run start
+# Puerto del servidor
+PORT=3000
 
-# watch mode
-$ yarn run start:dev
+# Tamaño máximo de requests
+APP_MAX_SIZE=10mb
 
-# production mode
-$ yarn run start:prod
+# Entorno (dev/prod)
+ENV_ENTORNO=dev
+
+# CORS (para producción)
+ENV_CORS=https://dominio1.com,https://dominio2.com
+
+# Habilitar Swagger
+ENV_SWAGGER_SHOW=true
+
+# Sincronización de base de datos (solo desarrollo)
+ENV_SYNCHRONIZE=false
 ```
 
-## Run tests
+## Endpoints de la API
+
+### Gestión de Contraseñas
+
+- `GET /password-manager` - Obtener todas las entradas
+- `GET /password-manager/:id` - Obtener entrada específica
+- `GET /password-manager/category/:category` - Filtrar por categoría
+- `POST /password-manager` - Crear nueva entrada
+- `PUT /password-manager/:id` - Actualizar entrada
+- `DELETE /password-manager/:id?masterKey=xxx` - Eliminar entrada
+- `POST /password-manager/:id/decrypt` - Descifrar contraseña
+
+### Documentación Swagger
+
+Una vez iniciado el servidor, accede a:
+- **Swagger UI**: `http://localhost:3000/api`
+
+## Ejemplo de Uso
+
+### 1. Crear nueva entrada
+
+```json
+POST /password-manager
+{
+  "title": "Gmail Personal",
+  "description": "Cuenta principal de Gmail",
+  "username": "usuario@gmail.com",
+  "password": "miContraseñaSegura123!",
+  "url": "https://gmail.com",
+  "category": "Email",
+  "notes": "Cuenta creada en 2020",
+  "masterKey": "miClaveMaestraSegura123!"
+}
+```
+
+### 2. Descifrar contraseña
+
+```json
+POST /password-manager/1/decrypt
+{
+  "masterKey": "miClaveMaestraSegura123!"
+}
+```
+
+### 3. Actualizar entrada
+
+```json
+PUT /password-manager/1
+{
+  "title": "Gmail Personal Actualizado",
+  "masterKey": "miClaveMaestraSegura123!"
+}
+```
+
+## Arquitectura de Seguridad
+
+### Cifrado de Contraseñas
+- **Algoritmo**: AES (Advanced Encryption Standard)
+- **Clave**: Derivada de la clave maestra del usuario
+- **Resultado**: Contraseña cifrada almacenada en base de datos
+
+### Hash de Clave Maestra
+- **Algoritmo**: bcrypt
+- **Rounds**: 12 (configurable)
+- **Propósito**: Verificación segura sin almacenar la clave original
+
+### Flujo de Seguridad
+1. Usuario proporciona clave maestra
+2. Sistema verifica hash con bcrypt
+3. Si es válida, permite operaciones
+4. Para descifrar: usa AES con clave maestra
+5. Para cifrar: usa AES con clave maestra
+
+## Estructura del Proyecto
+
+```
+src/
+├── entitys/
+│   └── password-manager.entity.ts    # Entidad de base de datos
+├── dto/
+│   └── password-manager.dto.ts        # DTOs de validación
+├── modules/
+│   └── password-manager/
+│       ├── password-manager.controller.ts
+│       └── password-manager.service.ts
+├── providers/
+│   └── password-manager.providers.ts  # Proveedores de repositorio
+└── configurations/
+    └── configuration.ts               # Configuración de entorno
+```
+
+## Consideraciones de Seguridad
+
+1. **Nunca almacenar claves maestras en texto plano**
+2. **Usar HTTPS en producción**
+3. **Implementar rate limiting**
+4. **Logs de auditoría para operaciones sensibles**
+5. **Backup seguro de la base de datos**
+
+## Desarrollo
 
 ```bash
-# unit tests
-$ yarn run test
+# Ejecutar en modo desarrollo
+npm run start:dev
 
-# e2e tests
-$ yarn run test:e2e
+# Ejecutar tests
+npm run test
 
-# test coverage
-$ yarn run test:cov
+# Linting
+npm run lint
 ```
 
-## Deployment
+## Autor
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ yarn install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**Juan Victor Serrudo Chavez**
+- Email: juan.serrudo@ucb.edu.bo
+- Proyecto: Módulo 8 - Maestría UCB
