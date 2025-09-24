@@ -33,8 +33,8 @@ docker-compose down
 
 ## 🌐 Acceso a la Aplicación
 
-- **API Principal:** http://localhost:3000/api
-- **Swagger Documentation:** http://localhost:3000/api-docs
+- **API Principal:** http://localhost:3000
+- **Swagger Documentation:** http://localhost:3000/api
 - **Nginx Proxy:** http://localhost:8080
 
 ## 📁 Estructura de Archivos Docker
