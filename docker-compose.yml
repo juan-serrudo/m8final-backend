@@ -1,6 +1,44 @@
 version: '3.8'
 
 services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: m8final-postgres
+    environment:
+      POSTGRES_DB: password_manager
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d password_manager"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: m8final-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # Aplicación NestJS
   app:
     build:
@@ -17,16 +55,29 @@ services:
       - ENV_SWAGGER_SHOW=true
       - ENV_SYNCHRONIZE=false
       - APP_MAX_SIZE=10mb
-    volumes:
-      # Montar directorio para persistir la base de datos SQLite
-      - ./data:/app/data
-      # Montar la base de datos SQLite existente si existe
-      - ./database.sqlite:/app/database.sqlite:ro
+      # Database configuration
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=password123
+      - DB_NAME=password_manager
+      # Redis configuration
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      # Throttler configuration
+      - THROTTLE_TTL=60
+      - THROTTLE_LIMIT=10
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -52,5 +103,7 @@ networks:
     driver: bridge
 
 volumes:
-  app-data:
+  postgres_data:
+    driver: local
+  redis_data:
     driver: local

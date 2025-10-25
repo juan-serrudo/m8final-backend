@@ -5,6 +5,7 @@ import { PasswordManager } from 'src/entitys/password-manager.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as CryptoJS from 'crypto-js';
+import { CacheService } from '../../services/cache.service';
 
 @Injectable()
 export class PasswordManagerService {
@@ -13,6 +14,7 @@ export class PasswordManagerService {
   constructor(
     @Inject('PASSWORD_MANAGER_REPOSITORY')
     private passwordManagerRepository: Repository<PasswordManager>,
+    private cacheService: CacheService,
   ) {}
 
   // Método para cifrar contraseña usando AES
@@ -46,6 +48,14 @@ export class PasswordManagerService {
     };
 
     try {
+      // Intentar obtener del caché primero
+      const cacheKey = 'passwords:all';
+      const cachedData = await this.cacheService.get<ResponseDTO>(cacheKey);
+      
+      if (cachedData) {
+        return cachedData;
+      }
+
       const passwords = await this.passwordManagerRepository.find({
         select: ['id', 'title', 'description', 'username', 'url', 'category', 'notes', 'createdAt', 'updateAt']
       });
@@ -54,6 +64,9 @@ export class PasswordManagerService {
       response.message = 'Consulta realizada correctamente.';
       response.response = passwords;
       response.status = 200;
+
+      // Guardar en caché por 5 minutos
+      await this.cacheService.set(cacheKey, response, 300);
 
     } catch (error) {
       response.error = true;
@@ -74,6 +87,14 @@ export class PasswordManagerService {
     };
 
     try {
+      // Intentar obtener del caché primero
+      const cacheKey = `passwords:${id}`;
+      const cachedData = await this.cacheService.get<ResponseDTO>(cacheKey);
+      
+      if (cachedData) {
+        return cachedData;
+      }
+
       const password = await this.passwordManagerRepository.findOne({
         where: { id },
         select: ['id', 'title', 'description', 'username', 'url', 'category', 'notes', 'createdAt', 'updateAt']
@@ -91,6 +112,9 @@ export class PasswordManagerService {
       response.message = 'Entrada encontrada.';
       response.response = password;
       response.status = 200;
+
+      // Guardar en caché por 5 minutos
+      await this.cacheService.set(cacheKey, response, 300);
 
     } catch (error) {
       response.error = true;
@@ -129,6 +153,10 @@ export class PasswordManagerService {
       });
 
       const savedPassword = await this.passwordManagerRepository.save(newPassword);
+
+      // Invalidar caché relacionado
+      await this.cacheService.del('passwords:all');
+      await this.cacheService.delPattern('passwords:*');
 
       // No devolver la contraseña cifrada ni el hash de la clave maestra
       const { encryptedPassword: _, masterKeyHash: __, ...safePassword } = savedPassword;
@@ -194,6 +222,11 @@ export class PasswordManagerService {
 
       await this.passwordManagerRepository.update(id, updateData);
 
+      // Invalidar caché relacionado
+      await this.cacheService.del('passwords:all');
+      await this.cacheService.del(`passwords:${id}`);
+      await this.cacheService.delPattern('passwords:*');
+
       response.error = false;
       response.message = 'Contraseña actualizada exitosamente.';
       response.response = { id };
@@ -240,6 +273,11 @@ export class PasswordManagerService {
       }
 
       await this.passwordManagerRepository.delete(id);
+
+      // Invalidar caché relacionado
+      await this.cacheService.del('passwords:all');
+      await this.cacheService.del(`passwords:${id}`);
+      await this.cacheService.delPattern('passwords:*');
 
       response.error = false;
       response.message = 'Contraseña eliminada exitosamente.';
