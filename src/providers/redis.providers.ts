@@ -13,7 +13,6 @@ export const redisProviders: Provider[] = [
         port: configService.get('redis.port'),
         password: configService.get('redis.password'),
         db: configService.get('redis.db'),
-        retryDelayOnFailover: 100,
         enableReadyCheck: false,
         maxRetriesPerRequest: null,
       });

@@ -13,8 +13,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME || 'password_manager',
   entities: [join(__dirname, '../**/*.entity{.ts,.js}')],
   migrations: [join(__dirname, '../migrations/*{.ts,.js}')],
-  seeds: [join(__dirname, '../seeds/*{.ts,.js}')],
   synchronize: process.env.NODE_ENV === 'development',
   logging: process.env.NODE_ENV === 'development',
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  ssl: false,
 });

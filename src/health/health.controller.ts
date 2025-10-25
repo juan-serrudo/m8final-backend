@@ -3,7 +3,6 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import {
   HealthCheckService,
   HealthCheck,
-  TypeOrmHealthIndicator,
   MemoryHealthIndicator,
   DiskHealthIndicator,
 } from '@nestjs/terminus';
@@ -14,7 +13,6 @@ import { CacheService } from '../services/cache.service';
 export class HealthController {
   constructor(
     private health: HealthCheckService,
-    private db: TypeOrmHealthIndicator,
     private memory: MemoryHealthIndicator,
     private disk: DiskHealthIndicator,
     private cacheService: CacheService,
@@ -36,10 +34,61 @@ export class HealthController {
   @ApiOperation({ summary: 'Health check de base de datos' })
   @ApiResponse({ status: 200, description: 'Estado de la base de datos' })
   @HealthCheck()
-  checkDatabase() {
-    return this.health.check([
-      () => this.db.pingCheck('database'),
-    ]);
+  async checkDatabase() {
+    try {
+      // Verificar conexión a PostgreSQL directamente
+      const { Client } = require('pg');
+      const client = new Client({
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT || '5432'),
+        user: process.env.DB_USER || 'postgres',
+        password: process.env.DB_PASSWORD || 'password123',
+        database: process.env.DB_NAME || 'password_manager',
+      });
+      
+      await client.connect();
+      await client.query('SELECT 1');
+      await client.end();
+      
+      return {
+        status: 'ok',
+        info: {
+          database: {
+            status: 'up',
+            message: 'PostgreSQL connection successful',
+          },
+        },
+        error: {},
+        details: {
+          database: {
+            status: 'up',
+            message: 'PostgreSQL connection successful',
+          },
+        },
+      };
+    } catch (error) {
+      return {
+        status: 'error',
+        info: {
+          database: {
+            status: 'down',
+            error: error.message,
+          },
+        },
+        error: {
+          database: {
+            status: 'down',
+            error: error.message,
+          },
+        },
+        details: {
+          database: {
+            status: 'down',
+            error: error.message,
+          },
+        },
+      };
+    }
   }
 
   @Get('redis')

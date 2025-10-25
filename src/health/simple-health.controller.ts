@@ -1,26 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { ResponseDTO } from './dto/response.dto';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-@ApiTags('INICIO')
-@Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+@ApiTags('Health')
+@Controller('health')
+export class SimpleHealthController {
 
-  @Get('/')
-  @ApiOperation({
-    summary: 'Permite verificar si el servicio está funcionando.',
-  })
-  getPing(): ResponseDTO {
-    return this.appService.getPing();
-  }
-
-  @Get('health')
-  @ApiOperation({
-    summary: 'Health check general del sistema',
-  })
-  getHealth() {
+  @Get()
+  @ApiOperation({ summary: 'Health check general' })
+  @ApiResponse({ status: 200, description: 'Estado general del sistema' })
+  check() {
     return {
       status: 'ok',
       message: 'Sistema funcionando correctamente',
@@ -29,11 +17,10 @@ export class AppController {
     };
   }
 
-  @Get('health/db')
-  @ApiOperation({
-    summary: 'Health check de base de datos',
-  })
-  async getHealthDb() {
+  @Get('db')
+  @ApiOperation({ summary: 'Health check de base de datos' })
+  @ApiResponse({ status: 200, description: 'Estado de la base de datos' })
+  async checkDatabase() {
     try {
       const { Client } = require('pg');
       const client = new Client({
@@ -89,11 +76,10 @@ export class AppController {
     }
   }
 
-  @Get('health/redis')
-  @ApiOperation({
-    summary: 'Health check de Redis',
-  })
-  async getHealthRedis() {
+  @Get('redis')
+  @ApiOperation({ summary: 'Health check de Redis' })
+  @ApiResponse({ status: 200, description: 'Estado de Redis' })
+  async checkRedis() {
     try {
       const Redis = require('ioredis');
       const redis = new Redis({

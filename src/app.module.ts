@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule } from '@nestjs/throttler';
 import configuration from './configurations/configuration';
@@ -12,6 +12,7 @@ import { passwordManagerProviders } from './providers/password-manager.providers
 import { redisProviders } from './providers/redis.providers';
 import { CacheService } from './services/cache.service';
 import { HealthModule } from './health/health.module';
+import { SimpleHealthController } from './health/simple-health.controller';
 import { PasswordManager } from './entitys/password-manager.entity';
 import { throttlerConfig } from './configurations/throttler.config';
 import { RedisStorage } from './configurations/redis-storage';
@@ -39,15 +40,16 @@ import { RedisStorage } from './configurations/redis-storage';
       inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([PasswordManager]),
-    ThrottlerModule.forRootAsync({
-      useFactory: (configService, redisStorage) => throttlerConfig(configService, redisStorage),
-      inject: [ConfigService, RedisStorage],
-    }),
+    // ThrottlerModule.forRootAsync({
+    //   useFactory: (configService, redisStorage) => throttlerConfig(configService, redisStorage),
+    //   inject: [ConfigService, RedisStorage],
+    // }),
     HealthModule,
   ],
   controllers: [
     AppController,
     PasswordManagerController,
+    SimpleHealthController,
   ],
   providers: [
     AppService,
