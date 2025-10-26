@@ -8,11 +8,11 @@ interface PasswordFormProps {
   title: string;
 }
 
-const PasswordForm: React.FC<PasswordFormProps> = ({ 
-  password, 
-  onSubmit, 
-  onCancel, 
-  title 
+const PasswordForm: React.FC<PasswordFormProps> = ({
+  password,
+  onSubmit,
+  onCancel,
+  title
 }) => {
   const [formData, setFormData] = useState({
     title: password?.title || '',
@@ -64,7 +64,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -83,7 +83,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -108,7 +108,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
               value={formData.title}
               onChange={handleChange}
               className={errors.title ? 'error' : ''}
-              placeholder="ej., Cuenta de Gmail"
+              placeholder="Ejemplo Cuenta de Gmail"
             />
             {errors.title && <span className="error-text">{errors.title}</span>}
           </div>
@@ -122,7 +122,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
               value={formData.username}
               onChange={handleChange}
               className={errors.username ? 'error' : ''}
-              placeholder="ej., usuario@ejemplo.com"
+              placeholder="Ejemplo: usuario@ejemplo.com"
             />
             {errors.username && <span className="error-text">{errors.username}</span>}
           </div>

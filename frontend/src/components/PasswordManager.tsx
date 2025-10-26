@@ -11,11 +11,11 @@ interface PasswordManagerProps {
   onRefresh: () => void;
 }
 
-const PasswordManager: React.FC<PasswordManagerProps> = ({ 
-  passwords, 
-  loading, 
-  error, 
-  onRefresh 
+const PasswordManager: React.FC<PasswordManagerProps> = ({
+  passwords,
+  loading,
+  error,
+  onRefresh
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [editingPassword, setEditingPassword] = useState<PasswordEntry | null>(null);
@@ -67,8 +67,8 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
     }
   };
 
-  const filteredPasswords = filter === 'all' 
-    ? passwords 
+  const filteredPasswords = filter === 'all'
+    ? passwords
     : passwords.filter(p => p.category.toLowerCase() === filter.toLowerCase());
 
   const categories = Array.from(new Set(passwords.map(p => p.category)));
@@ -78,14 +78,14 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
       <div className="password-manager-header">
         <h2>Gestor de Contraseñas</h2>
         <div className="password-manager-controls">
-          <button 
-            className="btn btn-primary" 
+          <button
+            className="btn btn-primary"
             onClick={() => setShowForm(true)}
           >
             Agregar Nueva Contraseña
           </button>
-          <button 
-            className="btn btn-secondary" 
+          <button
+            className="btn btn-secondary"
             onClick={onRefresh}
             disabled={loading}
           >
@@ -102,9 +102,9 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
 
       <div className="filter-section">
         <label htmlFor="category-filter">Filtrar por categoría:</label>
-        <select 
+        <select
           id="category-filter"
-          value={filter} 
+          value={filter}
           onChange={(e) => setFilter(e.target.value)}
           className="filter-select"
         >
@@ -115,7 +115,7 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
         </select>
       </div>
 
-      <PasswordList 
+      <PasswordList
         passwords={filteredPasswords}
         onEdit={setEditingPassword}
         onDelete={handleDelete}
