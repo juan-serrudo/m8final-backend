@@ -37,11 +37,11 @@ function App() {
         <header className="App-header">
           <nav className="navbar">
             <div className="nav-brand">
-              <h1>🔐 Password Manager</h1>
+              <h1>🔐 Gestor de Contraseñas</h1>
             </div>
             <div className="nav-links">
-              <Link to="/" className="nav-link">Home</Link>
-              <Link to="/health" className="nav-link">Health Check</Link>
+              <Link to="/" className="nav-link">Inicio</Link>
+              <Link to="/health" className="nav-link">Estado del Sistema</Link>
             </div>
           </nav>
         </header>
@@ -64,7 +64,7 @@ function App() {
         </main>
 
         <footer className="App-footer">
-          <p>Password Manager - Secure Password Management System</p>
+          <p>Gestor de Contraseñas - Sistema Seguro de Gestión de Contraseñas</p>
         </footer>
       </div>
     </Router>

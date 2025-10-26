@@ -39,23 +39,23 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!formData.title.trim()) {
-      newErrors.title = 'Title is required';
+      newErrors.title = 'El título es requerido';
     }
 
     if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
+      newErrors.username = 'El nombre de usuario es requerido';
     }
 
     if (!password && !formData.password.trim()) {
-      newErrors.password = 'Password is required';
+      newErrors.password = 'La contraseña es requerida';
     }
 
     if (!formData.category.trim()) {
-      newErrors.category = 'Category is required';
+      newErrors.category = 'La categoría es requerida';
     }
 
     if (!formData.masterKey.trim()) {
-      newErrors.masterKey = 'Master key is required';
+      newErrors.masterKey = 'La clave maestra es requerida';
     }
 
     setErrors(newErrors);
@@ -100,7 +100,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
 
         <form onSubmit={handleSubmit} className="password-form">
           <div className="form-group">
-            <label htmlFor="title">Title *</label>
+            <label htmlFor="title">Título *</label>
             <input
               type="text"
               id="title"
@@ -108,13 +108,13 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
               value={formData.title}
               onChange={handleChange}
               className={errors.title ? 'error' : ''}
-              placeholder="e.g., Gmail Account"
+              placeholder="ej., Cuenta de Gmail"
             />
             {errors.title && <span className="error-text">{errors.title}</span>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="username">Username *</label>
+            <label htmlFor="username">Nombre de Usuario *</label>
             <input
               type="text"
               id="username"
@@ -122,14 +122,14 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
               value={formData.username}
               onChange={handleChange}
               className={errors.username ? 'error' : ''}
-              placeholder="e.g., user@example.com"
+              placeholder="ej., usuario@ejemplo.com"
             />
             {errors.username && <span className="error-text">{errors.username}</span>}
           </div>
 
           <div className="form-group">
             <label htmlFor="password">
-              Password {!password && '*'}
+              Contraseña {!password && '*'}
             </label>
             <input
               type="password"
@@ -138,18 +138,18 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
               value={formData.password}
               onChange={handleChange}
               className={errors.password ? 'error' : ''}
-              placeholder={password ? "Leave empty to keep current password" : "Enter password"}
+              placeholder={password ? "Dejar vacío para mantener la contraseña actual" : "Ingresar contraseña"}
             />
             {errors.password && <span className="error-text">{errors.password}</span>}
             {password && (
               <small className="form-help">
-                Leave empty to keep the current password
+                Dejar vacío para mantener la contraseña actual
               </small>
             )}
           </div>
 
           <div className="form-group">
-            <label htmlFor="category">Category *</label>
+            <label htmlFor="category">Categoría *</label>
             <select
               id="category"
               name="category"
@@ -157,21 +157,21 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
               onChange={handleChange}
               className={errors.category ? 'error' : ''}
             >
-              <option value="">Select a category</option>
-              <option value="Social Media">Social Media</option>
+              <option value="">Seleccionar una categoría</option>
+              <option value="Redes Sociales">Redes Sociales</option>
               <option value="Email">Email</option>
-              <option value="Banking">Banking</option>
-              <option value="Work">Work</option>
+              <option value="Bancario">Bancario</option>
+              <option value="Trabajo">Trabajo</option>
               <option value="Personal">Personal</option>
-              <option value="Gaming">Gaming</option>
-              <option value="Shopping">Shopping</option>
-              <option value="Other">Other</option>
+              <option value="Juegos">Juegos</option>
+              <option value="Compras">Compras</option>
+              <option value="Otro">Otro</option>
             </select>
             {errors.category && <span className="error-text">{errors.category}</span>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="masterKey">Master Key *</label>
+            <label htmlFor="masterKey">Clave Maestra *</label>
             <input
               type="password"
               id="masterKey"
@@ -179,20 +179,20 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
               value={formData.masterKey}
               onChange={handleChange}
               className={errors.masterKey ? 'error' : ''}
-              placeholder="Enter your master key"
+              placeholder="Ingresar tu clave maestra"
             />
             {errors.masterKey && <span className="error-text">{errors.masterKey}</span>}
             <small className="form-help">
-              This is required to encrypt/decrypt your password
+              Esto es requerido para encriptar/desencriptar tu contraseña
             </small>
           </div>
 
           <div className="form-actions">
             <button type="button" onClick={onCancel} className="btn btn-secondary">
-              Cancel
+              Cancelar
             </button>
             <button type="submit" className="btn btn-primary">
-              {password ? 'Update' : 'Create'}
+              {password ? 'Actualizar' : 'Crear'}
             </button>
           </div>
         </form>

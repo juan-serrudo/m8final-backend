@@ -23,7 +23,7 @@ const HealthCheck: React.FC = () => {
       setHealthStatus(response.data);
       setLastChecked(new Date());
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Failed to check health status');
+      setError(err.response?.data?.message || err.message || 'Error al verificar el estado del sistema');
     } finally {
       setLoading(false);
     }
@@ -74,19 +74,19 @@ const HealthCheck: React.FC = () => {
   return (
     <div className="health-check">
       <div className="health-check-header">
-        <h2>System Health Check</h2>
+        <h2>Verificación de Estado del Sistema</h2>
         <button 
           className="btn btn-primary" 
           onClick={checkHealth}
           disabled={loading}
         >
-          {loading ? 'Checking...' : 'Refresh'}
+          {loading ? 'Verificando...' : 'Actualizar'}
         </button>
       </div>
 
       {lastChecked && (
         <div className="last-checked">
-          Last checked: {lastChecked.toLocaleString()}
+          Última verificación: {lastChecked.toLocaleString()}
         </div>
       )}
 
@@ -101,7 +101,7 @@ const HealthCheck: React.FC = () => {
         <div className="health-status">
           <div className="overall-status">
             <h3>
-              Overall Status: 
+              Estado General: 
               <span 
                 className="status-indicator"
                 style={{ color: getStatusColor(healthStatus.status) }}
@@ -113,21 +113,21 @@ const HealthCheck: React.FC = () => {
 
           {healthStatus.info && Object.keys(healthStatus.info).length > 0 && (
             <div className="health-info">
-              <h4>System Information</h4>
+              <h4>Información del Sistema</h4>
               {formatHealthInfo(healthStatus.info)}
             </div>
           )}
 
           {healthStatus.error && Object.keys(healthStatus.error).length > 0 && (
             <div className="health-errors">
-              <h4>Errors</h4>
+              <h4>Errores</h4>
               {formatHealthInfo(healthStatus.error)}
             </div>
           )}
 
           {healthStatus.details && Object.keys(healthStatus.details).length > 0 && (
             <div className="health-details">
-              <h4>Additional Details</h4>
+              <h4>Detalles Adicionales</h4>
               <pre>{JSON.stringify(healthStatus.details, null, 2)}</pre>
             </div>
           )}
@@ -135,15 +135,15 @@ const HealthCheck: React.FC = () => {
       )}
 
       <div className="health-info-section">
-        <h3>About Health Checks</h3>
+        <h3>Acerca de las Verificaciones de Salud</h3>
         <p>
-          This health check monitors the status of various system components including:
+          Esta verificación de salud monitorea el estado de varios componentes del sistema incluyendo:
         </p>
         <ul>
-          <li><strong>Database:</strong> PostgreSQL connection and query performance</li>
-          <li><strong>Cache:</strong> Redis connection and memory usage</li>
-          <li><strong>API:</strong> Backend service availability</li>
-          <li><strong>Memory:</strong> System memory usage and heap statistics</li>
+          <li><strong>Base de Datos:</strong> Conexión PostgreSQL y rendimiento de consultas</li>
+          <li><strong>Caché:</strong> Conexión Redis y uso de memoria</li>
+          <li><strong>API:</strong> Disponibilidad del servicio backend</li>
+          <li><strong>Memoria:</strong> Uso de memoria del sistema y estadísticas del heap</li>
         </ul>
       </div>
     </div>

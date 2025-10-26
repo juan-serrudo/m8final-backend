@@ -1,29 +1,11 @@
-# Construcción multi-etapa para frontend React + Vite
-FROM node:20-alpine AS builder
-
-# Establecer directorio de trabajo
-WORKDIR /app
-
-# Copiar archivos de paquetes
-COPY package*.json ./
-
-# Instalar dependencias
-RUN npm ci --only=production
-
-# Copiar código fuente
-COPY . .
-
-# Construir la aplicación
-RUN npm run build
-
 # Etapa de producción con nginx
 FROM nginx:alpine AS production
 
 # Copiar configuración personalizada de nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Copiar aplicación construida desde la etapa builder
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Copiar aplicación construida (se construye localmente)
+COPY dist /usr/share/nginx/html
 
 # Establecer permisos apropiados
 RUN chown -R nginx:nginx /usr/share/nginx/html

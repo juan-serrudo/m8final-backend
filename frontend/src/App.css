@@ -320,10 +320,12 @@ body {
   background: white;
   border-radius: 16px;
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  margin: 2rem auto;
+  position: relative;
 }
 
 .modal-header {
@@ -361,7 +363,9 @@ body {
 
 /* Forms */
 .password-form, .decrypt-form {
-  padding: 1.5rem;
+  padding: 2rem;
+  background: #fafafa;
+  border-radius: 0 0 16px 16px;
 }
 
 .form-group {
@@ -371,18 +375,23 @@ body {
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 600;
   color: #333;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .form-group input,
 .form-group select {
   width: 100%;
-  padding: 0.75rem;
+  padding: 1rem;
   border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  transition: border-color 0.2s ease;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .form-group input:focus,
@@ -413,10 +422,10 @@ body {
 .form-actions {
   display: flex;
   gap: 1rem;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: 2rem;
   padding-top: 1rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #e0e0e0;
 }
 
 /* Password Decrypt */

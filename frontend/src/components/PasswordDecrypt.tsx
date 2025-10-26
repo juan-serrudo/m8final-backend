@@ -17,7 +17,7 @@ const PasswordDecrypt: React.FC<PasswordDecryptProps> = ({ password, onClose }) 
     e.preventDefault();
     
     if (!masterKey.trim()) {
-      setError('Master key is required');
+      setError('La clave maestra es requerida');
       return;
     }
 
@@ -30,10 +30,10 @@ const PasswordDecrypt: React.FC<PasswordDecryptProps> = ({ password, onClose }) 
       if (response.success && response.data) {
         setDecryptedPassword(response.data.decryptedPassword);
       } else {
-        setError(response.message || 'Failed to decrypt password');
+        setError(response.message || 'Error al desencriptar la contraseña');
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Failed to decrypt password');
+      setError(err.response?.data?.message || err.message || 'Error al desencriptar la contraseña');
     } finally {
       setLoading(false);
     }
@@ -41,22 +41,22 @@ const PasswordDecrypt: React.FC<PasswordDecryptProps> = ({ password, onClose }) 
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
-      alert('Password copied to clipboard!');
+      alert('¡Contraseña copiada al portapapeles!');
     }).catch(() => {
-      alert('Failed to copy to clipboard');
+      alert('Error al copiar al portapapeles');
     });
   };
 
   const getCategoryIcon = (category: string) => {
     const icons: Record<string, string> = {
-      'Social Media': '📱',
+      'Redes Sociales': '📱',
       'Email': '📧',
-      'Banking': '🏦',
-      'Work': '💼',
+      'Bancario': '🏦',
+      'Trabajo': '💼',
       'Personal': '👤',
-      'Gaming': '🎮',
-      'Shopping': '🛒',
-      'Other': '🔐'
+      'Juegos': '🎮',
+      'Compras': '🛒',
+      'Otro': '🔐'
     };
     return icons[category] || '🔐';
   };
@@ -75,11 +75,11 @@ const PasswordDecrypt: React.FC<PasswordDecryptProps> = ({ password, onClose }) 
         <div className="password-decrypt">
           <div className="password-info">
             <div className="info-field">
-              <label>Username:</label>
+              <label>Usuario:</label>
               <span>{password.username}</span>
             </div>
             <div className="info-field">
-              <label>Category:</label>
+              <label>Categoría:</label>
               <span>{password.category}</span>
             </div>
           </div>
@@ -87,13 +87,13 @@ const PasswordDecrypt: React.FC<PasswordDecryptProps> = ({ password, onClose }) 
           {!decryptedPassword ? (
             <form onSubmit={handleDecrypt} className="decrypt-form">
               <div className="form-group">
-                <label htmlFor="masterKey">Master Key</label>
+                <label htmlFor="masterKey">Clave Maestra</label>
                 <input
                   type="password"
                   id="masterKey"
                   value={masterKey}
                   onChange={(e) => setMasterKey(e.target.value)}
-                  placeholder="Enter your master key"
+                  placeholder="Ingresa tu clave maestra"
                   className={error ? 'error' : ''}
                   disabled={loading}
                 />
@@ -102,21 +102,21 @@ const PasswordDecrypt: React.FC<PasswordDecryptProps> = ({ password, onClose }) 
 
               <div className="form-actions">
                 <button type="button" onClick={onClose} className="btn btn-secondary">
-                  Cancel
+                  Cancelar
                 </button>
                 <button 
                   type="submit" 
                   className="btn btn-primary"
                   disabled={loading}
                 >
-                  {loading ? 'Decrypting...' : 'Decrypt Password'}
+                  {loading ? 'Desencriptando...' : 'Desencriptar Contraseña'}
                 </button>
               </div>
             </form>
           ) : (
             <div className="decrypted-password">
               <div className="form-group">
-                <label>Decrypted Password:</label>
+                <label>Contraseña Desencriptada:</label>
                 <div className="password-display">
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -136,14 +136,14 @@ const PasswordDecrypt: React.FC<PasswordDecryptProps> = ({ password, onClose }) 
                     onClick={() => copyToClipboard(decryptedPassword)}
                     className="btn btn-sm btn-primary"
                   >
-                    📋 Copy
+                    📋 Copiar
                   </button>
                 </div>
               </div>
 
               <div className="form-actions">
                 <button onClick={onClose} className="btn btn-primary">
-                  Close
+                  Cerrar
                 </button>
               </div>
             </div>

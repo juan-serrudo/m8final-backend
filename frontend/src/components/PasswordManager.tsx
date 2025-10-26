@@ -76,20 +76,20 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
   return (
     <div className="password-manager">
       <div className="password-manager-header">
-        <h2>Password Manager</h2>
+        <h2>Gestor de Contraseñas</h2>
         <div className="password-manager-controls">
           <button 
             className="btn btn-primary" 
             onClick={() => setShowForm(true)}
           >
-            Add New Password
+            Agregar Nueva Contraseña
           </button>
           <button 
             className="btn btn-secondary" 
             onClick={onRefresh}
             disabled={loading}
           >
-            {loading ? 'Loading...' : 'Refresh'}
+            {loading ? 'Cargando...' : 'Actualizar'}
           </button>
         </div>
       </div>
@@ -101,14 +101,14 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
       )}
 
       <div className="filter-section">
-        <label htmlFor="category-filter">Filter by category:</label>
+        <label htmlFor="category-filter">Filtrar por categoría:</label>
         <select 
           id="category-filter"
           value={filter} 
           onChange={(e) => setFilter(e.target.value)}
           className="filter-select"
         >
-          <option value="all">All Categories</option>
+          <option value="all">Todas las Categorías</option>
           {categories.map(category => (
             <option key={category} value={category}>{category}</option>
           ))}

@@ -14,7 +14,7 @@ const PasswordList: React.FC<PasswordListProps> = ({
   onDecrypt 
 }) => {
   const handleDelete = (password: PasswordEntry) => {
-    const masterKey = prompt('Enter your master key to delete this password:');
+    const masterKey = prompt('Ingresa tu clave maestra para eliminar esta contraseña:');
     if (masterKey) {
       onDelete(password.id, masterKey);
     }
@@ -22,20 +22,20 @@ const PasswordList: React.FC<PasswordListProps> = ({
 
   const getCategoryIcon = (category: string) => {
     const icons: Record<string, string> = {
-      'Social Media': '📱',
+      'Redes Sociales': '📱',
       'Email': '📧',
-      'Banking': '🏦',
-      'Work': '💼',
+      'Bancario': '🏦',
+      'Trabajo': '💼',
       'Personal': '👤',
-      'Gaming': '🎮',
-      'Shopping': '🛒',
-      'Other': '🔐'
+      'Juegos': '🎮',
+      'Compras': '🛒',
+      'Otro': '🔐'
     };
     return icons[category] || '🔐';
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -48,8 +48,8 @@ const PasswordList: React.FC<PasswordListProps> = ({
     return (
       <div className="empty-state">
         <div className="empty-icon">🔐</div>
-        <h3>No passwords found</h3>
-        <p>Start by adding your first password entry.</p>
+        <h3>No se encontraron contraseñas</h3>
+        <p>Comienza agregando tu primera entrada de contraseña.</p>
       </div>
     );
   }
@@ -73,21 +73,21 @@ const PasswordList: React.FC<PasswordListProps> = ({
 
             <div className="password-card-body">
               <div className="password-field">
-                <label>Username:</label>
+                <label>Usuario:</label>
                 <span className="password-value">{password.username}</span>
               </div>
               
               <div className="password-field">
-                <label>Password:</label>
+                <label>Contraseña:</label>
                 <span className="password-value password-masked">
                   {'•'.repeat(12)}
                 </span>
               </div>
 
               <div className="password-meta">
-                <small>Created: {formatDate(password.createdAt)}</small>
+                <small>Creado: {formatDate(password.createdAt)}</small>
                 {password.updatedAt !== password.createdAt && (
-                  <small>Updated: {formatDate(password.updatedAt)}</small>
+                  <small>Actualizado: {formatDate(password.updatedAt)}</small>
                 )}
               </div>
             </div>
@@ -96,25 +96,25 @@ const PasswordList: React.FC<PasswordListProps> = ({
               <button 
                 className="btn btn-sm btn-primary"
                 onClick={() => onDecrypt(password)}
-                title="View Password"
+                title="Ver Contraseña"
               >
-                👁️ View
+                👁️ Ver
               </button>
               
               <button 
                 className="btn btn-sm btn-secondary"
                 onClick={() => onEdit(password)}
-                title="Edit Password"
+                title="Editar Contraseña"
               >
-                ✏️ Edit
+                ✏️ Editar
               </button>
               
               <button 
                 className="btn btn-sm btn-danger"
                 onClick={() => handleDelete(password)}
-                title="Delete Password"
+                title="Eliminar Contraseña"
               >
-                🗑️ Delete
+                🗑️ Eliminar
               </button>
             </div>
           </div>
