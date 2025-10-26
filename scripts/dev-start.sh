@@ -76,7 +76,7 @@ cleanup() {
 
     # Detener contenedores de desarrollo
     if [ -f "docker-compose.dev.yml" ]; then
-        docker-compose -f docker-compose.dev.yml down 2>/dev/null || true
+        docker compose -f docker-compose.dev.yml down 2>/dev/null || true
     fi
 
     print_success "Limpieza completada"
@@ -93,7 +93,7 @@ if ! command_exists docker; then
     exit 1
 fi
 
-if ! command_exists docker-compose; then
+if ! command_exists docker compose; then
     print_error "Docker Compose no está instalado. Por favor instala Docker Compose."
     exit 1
 fi
@@ -221,7 +221,7 @@ fi
 
 # Iniciar servicios de base de datos
 print_message "Iniciando servicios de base de datos..."
-docker-compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml up -d
 
 # Esperar a que los servicios estén disponibles
 wait_for_service localhost 5432 "PostgreSQL"
@@ -249,7 +249,7 @@ if [ -f "src/seeds/index.ts" ]; then
 fi
 
 # Volver al directorio raíz
-cd ..
+cd ../..
 
 # Instalar dependencias del frontend
 print_message "Instalando dependencias del frontend..."
@@ -262,7 +262,7 @@ else
 fi
 
 # Volver al directorio raíz
-cd ..
+cd ../..
 
 print_success "Configuración completada!"
 print_message "Iniciando aplicaciones en modo desarrollo..."
