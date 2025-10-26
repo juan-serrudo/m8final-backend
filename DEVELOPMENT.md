@@ -36,6 +36,7 @@ Una vez iniciado, tendrás acceso a:
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:3000
 - **Swagger UI**: http://localhost:3000/api
+- **Adminer**: http://localhost:8081
 - **PostgreSQL**: localhost:5432
 - **Redis**: localhost:6379
 
@@ -214,6 +215,25 @@ npm install
 - **Usuario**: postgres
 - **Contraseña**: password123
 - **Base de datos**: password_manager
+
+### Adminer - Gestión Web de Base de Datos
+
+Adminer es una herramienta web ligera para administrar bases de datos PostgreSQL. Está disponible en:
+
+- **URL**: http://localhost:8081
+- **Sistema**: PostgreSQL
+- **Servidor**: postgres-dev (desarrollo) / postgres (producción)
+- **Usuario**: postgres
+- **Contraseña**: password123
+- **Base de datos**: password_manager
+
+#### Características de Adminer:
+- ✅ Interfaz web intuitiva
+- ✅ Ejecutar consultas SQL
+- ✅ Ver y editar datos
+- ✅ Gestionar estructura de tablas
+- ✅ Importar/exportar datos
+- ✅ Tema oscuro (pepa-linha-dark)
 
 ### Conexión manual
 

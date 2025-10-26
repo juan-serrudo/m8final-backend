@@ -165,6 +165,26 @@ services:
       timeout: 5s
       retries: 5
 
+  # Adminer Database Management para desarrollo
+  adminer-dev:
+    image: adminer:4.8.1
+    container_name: password-manager-adminer-dev
+    ports:
+      - "8081:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres-dev
+      ADMINER_DESIGN: pepa-linha-dark
+    depends_on:
+      postgres-dev:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
 volumes:
   postgres_dev_data:
     driver: local
@@ -191,6 +211,14 @@ if port_in_use 6379; then
     fi
 fi
 
+if port_in_use 8081; then
+    print_warning "Puerto 8081 ya está en uso. Verificando si Adminer ya está corriendo..."
+    if ! nc -z localhost 8081 2>/dev/null; then
+        print_error "Puerto 8081 está ocupado por otro proceso"
+        exit 1
+    fi
+fi
+
 # Iniciar servicios de base de datos
 print_message "Iniciando servicios de base de datos..."
 docker-compose -f docker-compose.dev.yml up -d
@@ -198,6 +226,7 @@ docker-compose -f docker-compose.dev.yml up -d
 # Esperar a que los servicios estén disponibles
 wait_for_service localhost 5432 "PostgreSQL"
 wait_for_service localhost 6379 "Redis"
+wait_for_service localhost 8081 "Adminer"
 
 # Instalar dependencias del backend
 print_message "Instalando dependencias del backend..."
@@ -282,9 +311,17 @@ print_message ""
 print_message "Servicios disponibles:"
 print_message "  - PostgreSQL: localhost:5432"
 print_message "  - Redis: localhost:6379"
+print_message "  - Adminer: http://localhost:8081"
 print_message "  - Backend API: http://localhost:3000"
 print_message "  - Frontend: http://localhost:5173"
 print_message "  - Swagger UI: http://localhost:3000/api"
+print_message ""
+print_message "Credenciales de Adminer:"
+print_message "  - Sistema: PostgreSQL"
+print_message "  - Servidor: postgres-dev"
+print_message "  - Usuario: postgres"
+print_message "  - Contraseña: password123"
+print_message "  - Base de datos: password_manager"
 print_message ""
 print_message "Para detener el entorno de desarrollo, presiona Ctrl+C"
 print_message ""

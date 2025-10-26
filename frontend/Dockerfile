@@ -1,3 +1,26 @@
+# builder: marca la etapa de construcción.
+# Usa la imagen base Node 20 (Alpine) y nombra la etapa builder.
+FROM node:20-alpine AS builder
+
+# Crea (si no existe) y establece /app como directorio de trabajo.
+WORKDIR /app
+
+# Copia los manifiestos de dependencias. Mejora la caché de capas.
+COPY package*.json ./
+
+# Copia el lockfile para instalar dependencias exactas.
+COPY yarn.lock ./
+
+# Instala dependencias respetando el yarn.lock (sin actualizar versiones).
+RUN yarn install --frozen-lockfile
+
+# Copia el resto del código fuente al contenedor (ignorando lo de .dockerignore).
+COPY . .
+
+# Compila/genera el build de producción (normalmente en dist/).
+RUN yarn build
+
+
 # Etapa de producción con nginx
 FROM nginx:alpine AS production
 

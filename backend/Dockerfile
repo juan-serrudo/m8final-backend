@@ -24,7 +24,7 @@ RUN yarn build
 FROM node:20-alpine AS production
 
 # Instalar dependencias necesarias para SQLite y otros módulos nativos
-RUN apk add --no-cache sqlite
+# RUN apk add --no-cache sqlite
 
 # Crear usuario no-root para seguridad
 RUN addgroup -g 1001 -S nodejs && \
@@ -44,7 +44,7 @@ RUN yarn install --production --frozen-lockfile && yarn cache clean
 COPY --from=base /app/dist ./dist
 COPY --from=base /app/src ./src
 
-# Crear directorio de datos para SQLite
+# Crear directorio de datos
 RUN mkdir -p /app/data && \
     chown -R nestjs:nodejs /app
 
