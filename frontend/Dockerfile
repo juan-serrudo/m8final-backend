@@ -25,18 +25,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copiar aplicación construida desde la etapa builder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Crear usuario no-root para seguridad
-RUN addgroup -g 1001 -S nginx && \
-    adduser -S nginx -u 1001 -G nginx
-
 # Establecer permisos apropiados
-RUN chown -R nginx:nginx /usr/share/nginx/html && \
-    chown -R nginx:nginx /var/cache/nginx && \
-    chown -R nginx:nginx /var/log/nginx && \
-    chown -R nginx:nginx /etc/nginx/conf.d
-
-# Cambiar a usuario no-root
-USER nginx
+RUN chown -R nginx:nginx /usr/share/nginx/html
 
 # Exponer puerto 80
 EXPOSE 80

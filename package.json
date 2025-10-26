@@ -24,7 +24,7 @@
     "lint:frontend": "cd frontend && npm run lint",
     "lint:all": "npm run lint:backend && npm run lint:frontend",
     "install:all": "cd backend && npm install && cd ../frontend && npm install",
-    "clean": "docker-compose down -v --rmi all && docker system prune -f"
+    "clean": "docker compose down -v --rmi all && docker system prune -f"
   },
   "workspaces": [
     "backend",

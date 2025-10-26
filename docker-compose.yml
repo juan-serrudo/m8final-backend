@@ -102,7 +102,6 @@ services:
     image: nginx:alpine
     container_name: m8final-nginx
     ports:
-      - "80:80"
       - "8080:80"
       - "8443:443"
     volumes:

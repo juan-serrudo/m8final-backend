@@ -18,17 +18,17 @@ Este documento explica cómo desplegar la aplicación M8 Final Backend usando Do
 
 1. **Construir y ejecutar:**
 ```bash
-docker-compose up --build -d
+docker compose up --build -d
 ```
 
 2. **Ver logs:**
 ```bash
-docker-compose logs -f
+docker compose logs -f
 ```
 
 3. **Detener la aplicación:**
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## 🌐 Acceso a la Aplicación
@@ -41,7 +41,7 @@ docker-compose down
 
 ```
 ├── Dockerfile              # Configuración del contenedor de la aplicación
-├── docker-compose.yml      # Orquestación de servicios
+├── docker compose.yml      # Orquestación de servicios
 ├── .dockerignore           # Archivos a ignorar en el build
 ├── nginx.conf              # Configuración del proxy reverso
 ├── env.example             # Variables de entorno de ejemplo
@@ -76,38 +76,38 @@ Variables principales:
 ### Gestión de Contenedores
 ```bash
 # Ver estado de contenedores
-docker-compose ps
+docker compose ps
 
 # Reiniciar servicios
-docker-compose restart
+docker compose restart
 
 # Reconstruir contenedores
-docker-compose up --build
+docker compose up --build
 
 # Detener y eliminar contenedores
-docker-compose down
+docker compose down
 
 # Detener y eliminar volúmenes
-docker-compose down -v
+docker compose down -v
 ```
 
 ### Logs y Debugging
 ```bash
 # Ver logs de todos los servicios
-docker-compose logs -f
+docker compose logs -f
 
 # Ver logs de un servicio específico
-docker-compose logs -f app
-docker-compose logs -f nginx
+docker compose logs -f app
+docker compose logs -f nginx
 
 # Ejecutar comando en el contenedor
-docker-compose exec app sh
+docker compose exec app sh
 ```
 
 ### Limpieza
 ```bash
 # Limpiar contenedores parados
-docker-compose rm
+docker compose rm
 
 # Limpiar imágenes no utilizadas
 docker image prune
@@ -124,7 +124,7 @@ docker system prune -a
 sudo netstat -tulpn | grep :3000
 sudo netstat -tulpn | grep :8080
 
-# Cambiar puerto en docker-compose.yml
+# Cambiar puerto en docker compose.yml
 ports:
   - "3001:3000"  # Usar puerto 3001 en lugar de 3000
   - "8081:80"    # Usar puerto 8081 en lugar de 8080
@@ -142,10 +142,10 @@ mkdir -p ./data
 ### Problema: Aplicación no responde
 ```bash
 # Verificar logs
-docker-compose logs app
+docker compose logs app
 
 # Verificar salud del contenedor
-docker-compose ps
+docker compose ps
 ```
 
 ## 📊 Monitoreo
@@ -160,10 +160,10 @@ La aplicación incluye un health check que verifica:
 ### Verificar Estado
 ```bash
 # Estado de salud
-docker-compose ps
+docker compose ps
 
 # Logs de health check
-docker-compose logs app | grep health
+docker compose logs app | grep health
 ```
 
 ## 🔒 Seguridad
@@ -179,17 +179,17 @@ Para escalar horizontalmente:
 
 ```bash
 # Escalar la aplicación
-docker-compose up --scale app=3 -d
+docker compose up --scale app=3 -d
 
 # Verificar réplicas
-docker-compose ps
+docker compose ps
 ```
 
 ## 🆘 Soporte
 
 Si encuentras problemas:
 
-1. Verifica los logs: `docker-compose logs -f`
-2. Revisa la configuración en `docker-compose.yml`
+1. Verifica los logs: `docker compose logs -f`
+2. Revisa la configuración en `docker compose.yml`
 3. Verifica que Docker esté funcionando: `docker --version`
-4. Reinicia los servicios: `docker-compose restart`
+4. Reinicia los servicios: `docker compose restart`

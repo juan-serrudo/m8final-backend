@@ -7,5 +7,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     globals: true,
+    types: ['vitest/globals', '@testing-library/jest-dom'],
   },
 })

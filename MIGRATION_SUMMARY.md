@@ -106,7 +106,7 @@
 - `src/modules/password-manager/password-manager.service.ts` - Caché integrado
 
 ### Docker
-- `docker-compose.yml` - PostgreSQL + Redis + Health checks
+- `docker compose.yml` - PostgreSQL + Redis + Health checks
 - `env.example` - Variables de entorno actualizadas
 
 ### Documentación
@@ -135,16 +135,16 @@ npm run start:dev
 ### Docker
 ```bash
 # Levantar servicios
-docker-compose up -d
+docker compose up -d
 
 # Ejecutar migraciones
-docker-compose exec app npm run migration:run
+docker compose exec app npm run migration:run
 
 # Ejecutar seeds
-docker-compose exec app npm run seed:run
+docker compose exec app npm run seed:run
 
 # Ver logs
-docker-compose logs -f
+docker compose logs -f
 ```
 
 ### Testing

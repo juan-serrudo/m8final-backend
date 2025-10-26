@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { PasswordEntry, CreatePasswordEntry, UpdatePasswordEntry } from '../services/api';
+import { useState, useEffect } from 'react';
+import { type PasswordEntry, type CreatePasswordEntry, type UpdatePasswordEntry } from '../services/api';
 
 interface PasswordFormProps {
   password?: PasswordEntry;

@@ -96,27 +96,27 @@ Cuando se excede el límite, recibirás un error 429 (Too Many Requests).
 
 ### Levantar todos los servicios
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ### Ver logs
 ```bash
-docker-compose logs -f app
+docker compose logs -f app
 ```
 
 ### Ejecutar migraciones
 ```bash
-docker-compose exec app npm run migration:run
+docker compose exec app npm run migration:run
 ```
 
 ### Ejecutar seeds
 ```bash
-docker-compose exec app npm run seed:run
+docker compose exec app npm run seed:run
 ```
 
 ### Parar servicios
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## Variables de Entorno
@@ -131,23 +131,23 @@ nano .env
 ```
 
 ### Para Docker
-Las variables están configuradas en `docker-compose.yml` y se aplican automáticamente.
+Las variables están configuradas en `docker compose.yml` y se aplican automáticamente.
 
 ## Monitoreo
 
 ### Verificar estado de servicios
 ```bash
 # Estado de contenedores
-docker-compose ps
+docker compose ps
 
 # Logs de PostgreSQL
-docker-compose logs postgres
+docker compose logs postgres
 
 # Logs de Redis
-docker-compose logs redis
+docker compose logs redis
 
 # Logs de la aplicación
-docker-compose logs app
+docker compose logs app
 ```
 
 ### Métricas de rendimiento

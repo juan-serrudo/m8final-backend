@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { PasswordEntry, CreatePasswordEntry, UpdatePasswordEntry, passwordManagerApi } from '../services/api';
+import { useState } from 'react';
+import { type PasswordEntry, type CreatePasswordEntry, type UpdatePasswordEntry, passwordManagerApi } from '../services/api';
 import PasswordForm from './PasswordForm';
 import PasswordList from './PasswordList';
 import PasswordDecrypt from './PasswordDecrypt';
@@ -22,9 +22,9 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
   const [decryptingPassword, setDecryptingPassword] = useState<PasswordEntry | null>(null);
   const [filter, setFilter] = useState<string>('all');
 
-  const handleCreate = async (data: CreatePasswordEntry) => {
+  const handleCreate = async (data: CreatePasswordEntry | UpdatePasswordEntry) => {
     try {
-      const response = await passwordManagerApi.create(data);
+      const response = await passwordManagerApi.create(data as CreatePasswordEntry);
       if (response.success) {
         onRefresh();
         setShowForm(false);
@@ -36,9 +36,9 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
     }
   };
 
-  const handleUpdate = async (id: number, data: UpdatePasswordEntry) => {
+  const handleUpdate = async (id: number, data: CreatePasswordEntry | UpdatePasswordEntry) => {
     try {
-      const response = await passwordManagerApi.update(id, data);
+      const response = await passwordManagerApi.update(id, data as UpdatePasswordEntry);
       if (response.success) {
         onRefresh();
         setEditingPassword(null);

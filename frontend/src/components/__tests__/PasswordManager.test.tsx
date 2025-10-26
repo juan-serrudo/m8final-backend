@@ -1,16 +1,16 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import PasswordManager from '../PasswordManager';
 
 // Mock the API
-jest.mock('../../services/api', () => ({
+vi.mock('../../services/api', () => ({
   passwordManagerApi: {
-    getAll: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-    decrypt: jest.fn(),
+    getAll: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    delete: vi.fn(),
+    decrypt: vi.fn(),
   },
 }));
 
@@ -27,10 +27,10 @@ const mockPasswords = [
 ];
 
 describe('PasswordManager', () => {
-  const mockOnRefresh = jest.fn();
+  const mockOnRefresh = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders password manager with empty state', () => {

@@ -1,5 +1,4 @@
-import React from 'react';
-import { PasswordEntry } from '../services/api';
+import { type PasswordEntry } from '../services/api';
 
 interface PasswordListProps {
   passwords: PasswordEntry[];

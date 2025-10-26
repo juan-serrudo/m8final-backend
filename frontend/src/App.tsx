@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import PasswordManager from './components/PasswordManager';
 import HealthCheck from './components/HealthCheck';
-import { passwordManagerApi, PasswordEntry } from './services/api';
+import { passwordManagerApi, type PasswordEntry } from './services/api';
 
 function App() {
   const [passwords, setPasswords] = useState<PasswordEntry[]>([]);

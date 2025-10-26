@@ -23,7 +23,7 @@ m8final-backend/
 │   ├── start.sh            # Iniciar todos los servicios
 │   ├── stop.sh             # Detener todos los servicios
 │   └── health-check.sh      # Monitoreo de salud
-├── docker-compose.yml       # Orquestación multi-servicio
+├── docker compose.yml       # Orquestación multi-servicio
 ├── env.example             # Plantilla de variables de entorno
 └── README.md               # Este archivo
 ```
@@ -226,12 +226,12 @@ curl http://localhost:3000/health
 
 ```bash
 # Ver todos los logs
-docker-compose logs -f
+docker compose logs -f
 
 # Ver logs de servicio específico
-docker-compose logs -f app
-docker-compose logs -f frontend
-docker-compose logs -f nginx
+docker compose logs -f app
+docker compose logs -f frontend
+docker compose logs -f nginx
 ```
 
 ## 🚀 Despliegue
@@ -260,10 +260,10 @@ Para escalar servicios específicos:
 
 ```bash
 # Escalar instancias del backend
-docker-compose up -d --scale app=3
+docker compose up -d --scale app=3
 
 # Escalar instancias del frontend
-docker-compose up -d --scale frontend=2
+docker compose up -d --scale frontend=2
 ```
 
 ## 🔒 Características de Seguridad
@@ -302,26 +302,26 @@ Una vez que la aplicación esté ejecutándose, visita:
 2. **Problemas de Conexión a Base de Datos**:
    ```bash
    # Verificar logs de base de datos
-   docker-compose logs postgres
+   docker compose logs postgres
    ```
 
 3. **Frontend No Carga**:
    ```bash
    # Verificar logs de nginx
-   docker-compose logs nginx
+   docker compose logs nginx
    ```
 
 4. **Fallos de Construcción**:
    ```bash
    # Reconstruir sin cache
-   docker-compose build --no-cache
+   docker compose build --no-cache
    ```
 
 ### Reiniciar Todo
 
 ```bash
 # Detener y eliminar todo
-docker-compose down -v --rmi all
+docker compose down -v --rmi all
 
 # Eliminar todos los contenedores e imágenes
 docker system prune -a

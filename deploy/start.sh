@@ -13,9 +13,9 @@ if ! docker info > /dev/null 2>&1; then
     exit 1
 fi
 
-# Verificar si docker-compose está disponible
-if ! command -v docker-compose &> /dev/null; then
-    echo "❌ docker-compose no está instalado. Por favor instala docker-compose e intenta de nuevo."
+# Verificar si docker compose está disponible
+if ! docker compose version > /dev/null 2>&1; then
+    echo "❌ docker compose no está instalado. Por favor instala docker compose e intenta de nuevo."
     exit 1
 fi
 
@@ -33,7 +33,7 @@ mkdir -p deploy/logs
 
 # Iniciar los servicios
 echo "🐳 Iniciando servicios Docker..."
-docker-compose up -d
+docker compose up -d
 
 # Esperar a que los servicios estén listos
 echo "⏳ Esperando a que los servicios estén listos..."
@@ -47,13 +47,6 @@ if curl -f http://localhost:3000/health > /dev/null 2>&1; then
     echo "✅ Backend está saludable"
 else
     echo "⚠️  La verificación de salud del backend falló, pero el servicio podría estar iniciándose..."
-fi
-
-# Verificar salud del frontend
-if curl -f http://localhost/health > /dev/null 2>&1; then
-    echo "✅ Frontend está saludable"
-else
-    echo "⚠️  La verificación de salud del frontend falló, pero el servicio podría estar iniciándose..."
 fi
 
 # Verificar proxy nginx
@@ -73,9 +66,9 @@ echo "   📚 Documentación API: http://localhost:3000/api-docs"
 echo "   🏥 Verificación de Salud: http://localhost:8080/health"
 echo ""
 echo "📊 Para ver logs:"
-echo "   docker-compose logs -f"
+echo "   docker compose logs -f"
 echo ""
 echo "🛑 Para detener servicios:"
-echo "   docker-compose down"
+echo "   docker compose down"
 echo ""
 echo "✨ ¡Feliz programación!"

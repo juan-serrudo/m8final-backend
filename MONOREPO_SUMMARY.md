@@ -93,7 +93,7 @@ cd frontend && npm run dev
 ./deploy/health-check.sh
 
 # Ver logs
-docker-compose logs -f
+docker compose logs -f
 ```
 
 ## 🏗️ Resumen de Arquitectura

@@ -13,7 +13,7 @@ if [ ! -f .env ]; then
     cp env.example .env
 fi
 
-# Construir y ejecutar con docker-compose
+# Construir y ejecutar con docker compose
 echo "🔨 Construyendo y ejecutando contenedores..."
 docker compose up --build -d
 

@@ -48,7 +48,7 @@ async function bootstrap() {
 
   const port = envService.get<number>('port') || 3000;
   await app.listen(port, '0.0.0.0').then(async () => {
-    console.log(bold.blue('🚀 API is listening ON PORT', (await app.getUrl()) + '/api'));
+    console.log(bold.blue('🚀 API is listening ON PORT', (await app.getUrl())));
   });
 }
 bootstrap();

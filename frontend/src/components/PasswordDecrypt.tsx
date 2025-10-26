@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { PasswordEntry, passwordManagerApi } from '../services/api';
+import { useState } from 'react';
+import { type PasswordEntry, passwordManagerApi } from '../services/api';
 
 interface PasswordDecryptProps {
   password: PasswordEntry;
