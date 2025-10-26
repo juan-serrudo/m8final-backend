@@ -57,7 +57,7 @@ services:
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USER=postgres
-      - DB_PASSWORD=Hr3v1DXiEU409jIi
+      - DB_PASSWORD=password123
       - DB_NAME=password_manager
       # Redis configuration
       - REDIS_HOST=redis
