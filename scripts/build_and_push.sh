@@ -181,11 +181,11 @@ build_and_push() {
 
 # Construir backend
 print_message "=== CONSTRUYENDO BACKEND ==="
-build_and_push "backend" "backend/Dockerfile" "backend/"
+build_and_push "backend" "apps/backend/Dockerfile" "apps/backend/"
 
 # Construir frontend
 print_message "=== CONSTRUYENDO FRONTEND ==="
-build_and_push "frontend" "frontend/Dockerfile" "frontend/"
+build_and_push "frontend" "apps/frontend/Dockerfile" "apps/frontend/"
 
 # Verificar imágenes publicadas
 print_message "=== VERIFICANDO IMÁGENES PUBLICADAS ==="

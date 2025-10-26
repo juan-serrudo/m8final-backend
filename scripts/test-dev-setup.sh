@@ -111,22 +111,22 @@ fi
 print_success "Scripts de desarrollo están ejecutables"
 
 # Verificar estructura del proyecto
-if [ ! -d "backend" ]; then
-    print_error "Directorio backend no encontrado"
+if [ ! -d "apps/backend" ]; then
+    print_error "Directorio apps/backend no encontrado"
     exit 1
 fi
 
-if [ ! -d "frontend" ]; then
-    print_error "Directorio frontend no encontrado"
+if [ ! -d "apps/frontend" ]; then
+    print_error "Directorio apps/frontend no encontrado"
     exit 1
 fi
 
-if [ ! -f "backend/package.json" ]; then
+if [ ! -f "apps/backend/package.json" ]; then
     print_error "package.json del backend no encontrado"
     exit 1
 fi
 
-if [ ! -f "frontend/package.json" ]; then
+if [ ! -f "apps/frontend/package.json" ]; then
     print_error "package.json del frontend no encontrado"
     exit 1
 fi

@@ -230,7 +230,7 @@ wait_for_service localhost 8081 "Adminer"
 
 # Instalar dependencias del backend
 print_message "Instalando dependencias del backend..."
-cd backend
+cd apps/backend
 
 if [ ! -d "node_modules" ]; then
     npm install
@@ -253,7 +253,7 @@ cd ..
 
 # Instalar dependencias del frontend
 print_message "Instalando dependencias del frontend..."
-cd frontend
+cd apps/frontend
 
 if [ ! -d "node_modules" ]; then
     npm install
@@ -270,19 +270,19 @@ print_message "Iniciando aplicaciones en modo desarrollo..."
 # Función para ejecutar backend en background
 start_backend() {
     print_message "Iniciando backend en puerto 3000..."
-    cd backend
+    cd apps/backend
     npm run start:dev &
     BACKEND_PID=$!
-    cd ..
+    cd ../..
 }
 
 # Función para ejecutar frontend en background
 start_frontend() {
     print_message "Iniciando frontend en puerto 5173..."
-    cd frontend
+    cd apps/frontend
     npm run dev &
     FRONTEND_PID=$!
-    cd ..
+    cd ../..
 }
 
 # Iniciar aplicaciones
