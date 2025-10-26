@@ -18,10 +18,10 @@ function App() {
       if (response.success) {
         setPasswords(response.data || []);
       } else {
-        setError(response.message || 'Error loading passwords');
+        setError(response.message || 'Error al cargar contraseñas');
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Failed to load passwords');
+      setError(err.response?.data?.message || err.message || 'Error al cargar las contraseñas');
     } finally {
       setLoading(false);
     }
@@ -48,16 +48,16 @@ function App() {
 
         <main className="App-main">
           <Routes>
-            <Route 
-              path="/" 
+            <Route
+              path="/"
               element={
-                <PasswordManager 
+                <PasswordManager
                   passwords={passwords}
                   loading={loading}
                   error={error}
                   onRefresh={loadPasswords}
                 />
-              } 
+              }
             />
             <Route path="/health" element={<HealthCheck />} />
           </Routes>

@@ -17,7 +17,7 @@ const HealthCheck: React.FC = () => {
   const checkHealth = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await api.get('/health');
       setHealthStatus(response.data);
@@ -75,8 +75,8 @@ const HealthCheck: React.FC = () => {
     <div className="health-check">
       <div className="health-check-header">
         <h2>Verificación de Estado del Sistema</h2>
-        <button 
-          className="btn btn-primary" 
+        <button
+          className="btn btn-primary"
           onClick={checkHealth}
           disabled={loading}
         >
@@ -101,8 +101,8 @@ const HealthCheck: React.FC = () => {
         <div className="health-status">
           <div className="overall-status">
             <h3>
-              Estado General: 
-              <span 
+              Estado General:
+              <span
                 className="status-indicator"
                 style={{ color: getStatusColor(healthStatus.status) }}
               >
