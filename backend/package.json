@@ -1,5 +1,5 @@
 {
-  "name": "m8final-backend",
+  "name": "password-manager",
   "version": "0.0.1",
   "description": "Bienvenido al Gestor de Contraseñas, basado ​​en principios REST, devuelve metadatos JSON",
   "author": "Juan Victor Serrudo Chavez",

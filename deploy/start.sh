@@ -1,81 +1,81 @@
 #!/bin/bash
 
-# Password Manager Monorepo - Start Script
-# This script starts the entire application stack
+# Gestor de Contraseñas Monorepo - Script de Inicio
+# Este script inicia toda la pila de aplicaciones
 
 set -e
 
-echo "🚀 Starting Password Manager Monorepo..."
+echo "🚀 Iniciando Gestor de Contraseñas Monorepo..."
 
-# Check if Docker is running
+# Verificar si Docker está ejecutándose
 if ! docker info > /dev/null 2>&1; then
-    echo "❌ Docker is not running. Please start Docker and try again."
+    echo "❌ Docker no está ejecutándose. Por favor inicia Docker e intenta de nuevo."
     exit 1
 fi
 
-# Check if docker-compose is available
+# Verificar si docker-compose está disponible
 if ! command -v docker-compose &> /dev/null; then
-    echo "❌ docker-compose is not installed. Please install docker-compose and try again."
+    echo "❌ docker-compose no está instalado. Por favor instala docker-compose e intenta de nuevo."
     exit 1
 fi
 
-# Create .env file if it doesn't exist
+# Crear archivo .env si no existe
 if [ ! -f .env ]; then
-    echo "📝 Creating .env file from env.example..."
+    echo "📝 Creando archivo .env desde env.example..."
     cp env.example .env
-    echo "✅ .env file created. Please review and update the configuration if needed."
+    echo "✅ Archivo .env creado. Por favor revisa y actualiza la configuración si es necesario."
 fi
 
-# Create necessary directories
-echo "📁 Creating necessary directories..."
+# Crear directorios necesarios
+echo "📁 Creando directorios necesarios..."
 mkdir -p backend/data
 mkdir -p deploy/logs
 
-# Start the services
-echo "🐳 Starting Docker services..."
+# Iniciar los servicios
+echo "🐳 Iniciando servicios Docker..."
 docker-compose up -d
 
-# Wait for services to be ready
-echo "⏳ Waiting for services to be ready..."
+# Esperar a que los servicios estén listos
+echo "⏳ Esperando a que los servicios estén listos..."
 sleep 10
 
-# Check service health
-echo "🔍 Checking service health..."
+# Verificar salud de los servicios
+echo "🔍 Verificando salud de los servicios..."
 
-# Check backend health
+# Verificar salud del backend
 if curl -f http://localhost:3000/health > /dev/null 2>&1; then
-    echo "✅ Backend is healthy"
+    echo "✅ Backend está saludable"
 else
-    echo "⚠️  Backend health check failed, but service might still be starting..."
+    echo "⚠️  La verificación de salud del backend falló, pero el servicio podría estar iniciándose..."
 fi
 
-# Check frontend health
+# Verificar salud del frontend
 if curl -f http://localhost/health > /dev/null 2>&1; then
-    echo "✅ Frontend is healthy"
+    echo "✅ Frontend está saludable"
 else
-    echo "⚠️  Frontend health check failed, but service might still be starting..."
+    echo "⚠️  La verificación de salud del frontend falló, pero el servicio podría estar iniciándose..."
 fi
 
-# Check nginx proxy
+# Verificar proxy nginx
 if curl -f http://localhost:8080/health > /dev/null 2>&1; then
-    echo "✅ Nginx proxy is healthy"
+    echo "✅ Proxy Nginx está saludable"
 else
-    echo "⚠️  Nginx proxy health check failed, but service might still be starting..."
+    echo "⚠️  La verificación de salud del proxy nginx falló, pero el servicio podría estar iniciándose..."
 fi
 
 echo ""
-echo "🎉 Password Manager Monorepo is starting up!"
+echo "🎉 ¡El Gestor de Contraseñas Monorepo está iniciándose!"
 echo ""
-echo "📋 Service URLs:"
-echo "   🌐 Frontend (via Nginx): http://localhost:8080"
+echo "📋 URLs de Servicios:"
+echo "   🌐 Frontend (vía Nginx): http://localhost:8080"
 echo "   🔧 Backend API: http://localhost:3000"
-echo "   📚 API Documentation: http://localhost:3000/api-docs"
-echo "   🏥 Health Check: http://localhost:8080/health"
+echo "   📚 Documentación API: http://localhost:3000/api-docs"
+echo "   🏥 Verificación de Salud: http://localhost:8080/health"
 echo ""
-echo "📊 To view logs:"
+echo "📊 Para ver logs:"
 echo "   docker-compose logs -f"
 echo ""
-echo "🛑 To stop services:"
+echo "🛑 Para detener servicios:"
 echo "   docker-compose down"
 echo ""
-echo "✨ Happy coding!"
+echo "✨ ¡Feliz programación!"

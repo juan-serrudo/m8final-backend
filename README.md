@@ -1,112 +1,112 @@
-# 🔐 Password Manager Monorepo
+# 🔐 Gestor de Contraseñas - Monorepo
 
-A secure password management system built with a modern monorepo architecture, featuring a NestJS backend, React frontend, and unified deployment with Docker.
+Un sistema seguro de gestión de contraseñas construido con una arquitectura moderna de monorepo, que incluye un backend NestJS, frontend React y despliegue unificado con Docker.
 
-## 📁 Project Structure
+## 📁 Estructura del Proyecto
 
 ```
 m8final-backend/
-├── backend/                 # NestJS Backend Application
-│   ├── src/                 # Source code
-│   ├── dist/                # Compiled JavaScript
-│   ├── test/                # Backend tests
-│   ├── Dockerfile           # Backend container configuration
-│   └── package.json         # Backend dependencies
-├── frontend/                # React + Vite Frontend Application
-│   ├── src/                 # Source code
-│   ├── public/              # Static assets
-│   ├── Dockerfile           # Frontend container configuration
-│   └── package.json         # Frontend dependencies
-├── nginx/                   # Nginx Configuration
-│   └── nginx.conf           # Reverse proxy configuration
-├── deploy/                  # Deployment Scripts
-│   ├── start.sh            # Start all services
-│   ├── stop.sh             # Stop all services
-│   └── health-check.sh      # Health monitoring
-├── docker-compose.yml       # Multi-service orchestration
-├── env.example             # Environment variables template
-└── README.md               # This file
+├── backend/                 # Aplicación Backend NestJS
+│   ├── src/                 # Código fuente
+│   ├── dist/                # JavaScript compilado
+│   ├── test/                # Pruebas del backend
+│   ├── Dockerfile           # Configuración del contenedor backend
+│   └── package.json         # Dependencias del backend
+├── frontend/                # Aplicación Frontend React + Vite
+│   ├── src/                 # Código fuente
+│   ├── public/              # Recursos estáticos
+│   ├── Dockerfile           # Configuración del contenedor frontend
+│   └── package.json         # Dependencias del frontend
+├── nginx/                   # Configuración de Nginx
+│   └── nginx.conf           # Configuración del proxy inverso
+├── deploy/                  # Scripts de Despliegue
+│   ├── start.sh            # Iniciar todos los servicios
+│   ├── stop.sh             # Detener todos los servicios
+│   └── health-check.sh      # Monitoreo de salud
+├── docker-compose.yml       # Orquestación multi-servicio
+├── env.example             # Plantilla de variables de entorno
+└── README.md               # Este archivo
 ```
 
-## 🚀 Quick Start
+## 🚀 Inicio Rápido
 
-### Prerequisites
+### Prerrequisitos
 
-- Docker and Docker Compose
-- Node.js 20+ (for local development)
+- Docker y Docker Compose
+- Node.js 20+ (para desarrollo local)
 - Git
 
-### 1. Clone and Setup
+### 1. Clonar y Configurar
 
 ```bash
-# Clone the repository
-git clone <repository-url>
+# Clonar el repositorio
+git clone <url-del-repositorio>
 cd m8final-backend
 
-# Copy environment configuration
+# Copiar configuración de entorno
 cp env.example .env
 
-# Review and update .env file if needed
+# Revisar y actualizar el archivo .env si es necesario
 ```
 
-### 2. Start the Application
+### 2. Iniciar la Aplicación
 
 ```bash
-# Make scripts executable
+# Hacer ejecutables los scripts
 chmod +x deploy/*.sh
 
-# Start all services
+# Iniciar todos los servicios
 ./deploy/start.sh
 ```
 
-### 3. Access the Application
+### 3. Acceder a la Aplicación
 
 - **Frontend**: http://localhost:8080
 - **Backend API**: http://localhost:3000
-- **API Documentation**: http://localhost:3000/api-docs
-- **Health Check**: http://localhost:8080/health
+- **Documentación API**: http://localhost:3000/api-docs
+- **Verificación de Salud**: http://localhost:8080/health
 
-## 🛠️ Development
+## 🛠️ Desarrollo
 
-### Backend Development
+### Desarrollo del Backend
 
 ```bash
 cd backend
 
-# Install dependencies
+# Instalar dependencias
 npm install
 
-# Start in development mode
+# Iniciar en modo desarrollo
 npm run start:dev
 
-# Run tests
+# Ejecutar pruebas
 npm run test
 
-# Run migrations
+# Ejecutar migraciones
 npm run migration:run
 ```
 
-### Frontend Development
+### Desarrollo del Frontend
 
 ```bash
 cd frontend
 
-# Install dependencies
+# Instalar dependencias
 npm install
 
-# Start development server
+# Iniciar servidor de desarrollo
 npm run dev
 
-# Run tests
+# Ejecutar pruebas
 npm run test
 
-# Build for production
+# Construir para producción
 npm run build
 ```
 
-### Full Stack Development
+### Desarrollo Full Stack
 
-For full-stack development with hot reloading:
+Para desarrollo full-stack con recarga automática:
 
 ```bash
 # Terminal 1: Backend
@@ -115,263 +115,263 @@ cd backend && npm run start:dev
 # Terminal 2: Frontend
 cd frontend && npm run dev
 
-# Terminal 3: Database (optional, if not using Docker)
-# Start PostgreSQL and Redis locally
+# Terminal 3: Base de datos (opcional, si no se usa Docker)
+# Iniciar PostgreSQL y Redis localmente
 ```
 
-## 🐳 Docker Services
+## 🐳 Servicios Docker
 
-The application consists of the following services:
+La aplicación consta de los siguientes servicios:
 
-### Core Services
+### Servicios Principales
 
-- **postgres**: PostgreSQL 16 database
-- **redis**: Redis 7 cache
-- **app**: NestJS backend API
-- **frontend**: React + Vite frontend
-- **nginx**: Reverse proxy and load balancer
+- **postgres**: Base de datos PostgreSQL 16
+- **redis**: Cache Redis 7
+- **app**: API Backend NestJS
+- **frontend**: Frontend React + Vite
+- **nginx**: Proxy inverso y balanceador de carga
 
-### Service Ports
+### Puertos de Servicio
 
-- **80**: Nginx (main entry point)
-- **8080**: Nginx (alternative port)
-- **3000**: Backend API (direct access)
+- **80**: Nginx (punto de entrada principal)
+- **8080**: Nginx (puerto alternativo)
+- **3000**: Backend API (acceso directo)
 - **5432**: PostgreSQL
 - **6379**: Redis
 
-## 🔧 Configuration
+## 🔧 Configuración
 
-### Environment Variables
+### Variables de Entorno
 
-Key environment variables (see `env.example` for complete list):
+Variables de entorno clave (ver `env.example` para la lista completa):
 
 ```bash
-# Backend Configuration
+# Configuración del Backend
 NODE_ENV=production
 PORT=3000
 DB_HOST=postgres
-DB_PASSWORD=your_secure_password
+DB_PASSWORD=tu_contraseña_segura
 
-# Frontend Configuration
+# Configuración del Frontend
 VITE_API_BASE_URL=http://localhost:3000/api
 
-# Database Configuration
+# Configuración de Base de Datos
 POSTGRES_DB=password_manager
 POSTGRES_USER=postgres
-POSTGRES_PASSWORD=your_secure_password
+POSTGRES_PASSWORD=tu_contraseña_segura
 ```
 
-### Nginx Configuration
+### Configuración de Nginx
 
-The nginx service acts as a reverse proxy:
+El servicio nginx actúa como proxy inverso:
 
-- `/api/*` → Backend API
-- `/api-docs` → API Documentation
-- `/health` → Health Check
-- `/*` → Frontend SPA (with fallback to index.html)
+- `/api/*` → API Backend
+- `/api-docs` → Documentación API
+- `/health` → Verificación de Salud
+- `/*` → Frontend SPA (con fallback a index.html)
 
-## 🧪 Testing
+## 🧪 Pruebas
 
-### Backend Tests
+### Pruebas del Backend
 
 ```bash
 cd backend
 
-# Unit tests
+# Pruebas unitarias
 npm run test
 
-# E2E tests
+# Pruebas E2E
 npm run test:e2e
 
-# Test coverage
+# Cobertura de pruebas
 npm run test:cov
 ```
 
-### Frontend Tests
+### Pruebas del Frontend
 
 ```bash
 cd frontend
 
-# Run tests
+# Ejecutar pruebas
 npm run test
 
-# Run tests with UI
+# Ejecutar pruebas con UI
 npm run test:ui
 
-# Test coverage
+# Cobertura de pruebas
 npm run test:coverage
 ```
 
-### Health Checks
+### Verificaciones de Salud
 
 ```bash
-# Check all services
+# Verificar todos los servicios
 ./deploy/health-check.sh
 
-# Check specific service
+# Verificar servicio específico
 curl http://localhost:8080/health
 curl http://localhost:3000/health
 ```
 
-## 📊 Monitoring
+## 📊 Monitoreo
 
-### Health Endpoints
+### Endpoints de Salud
 
-- **Overall Health**: `GET /health`
-- **Backend Health**: `GET /api/health`
-- **Database Health**: Included in backend health check
-- **Cache Health**: Included in backend health check
+- **Salud General**: `GET /health`
+- **Salud del Backend**: `GET /api/health`
+- **Salud de Base de Datos**: Incluido en verificación de salud del backend
+- **Salud del Cache**: Incluido en verificación de salud del backend
 
 ### Logs
 
 ```bash
-# View all logs
+# Ver todos los logs
 docker-compose logs -f
 
-# View specific service logs
+# Ver logs de servicio específico
 docker-compose logs -f app
 docker-compose logs -f frontend
 docker-compose logs -f nginx
 ```
 
-## 🚀 Deployment
+## 🚀 Despliegue
 
-### Production Deployment
+### Despliegue en Producción
 
-1. **Update Environment Variables**:
+1. **Actualizar Variables de Entorno**:
    ```bash
    cp env.example .env
-   # Edit .env with production values
+   # Editar .env con valores de producción
    ```
 
-2. **Build and Start**:
+2. **Construir e Iniciar**:
    ```bash
    ./deploy/start.sh
    ```
 
-3. **Verify Deployment**:
+3. **Verificar Despliegue**:
    ```bash
    ./deploy/health-check.sh
    ```
 
-### Scaling
+### Escalado
 
-To scale specific services:
+Para escalar servicios específicos:
 
 ```bash
-# Scale backend instances
+# Escalar instancias del backend
 docker-compose up -d --scale app=3
 
-# Scale frontend instances
+# Escalar instancias del frontend
 docker-compose up -d --scale frontend=2
 ```
 
-## 🔒 Security Features
+## 🔒 Características de Seguridad
 
-- **Password Encryption**: AES encryption with master key
-- **CORS Configuration**: Configurable cross-origin policies
-- **Rate Limiting**: Throttling to prevent abuse
-- **Health Checks**: Comprehensive monitoring
-- **Non-root Containers**: Security-hardened Docker images
-- **Environment Isolation**: Separate development/production configs
+- **Cifrado de Contraseñas**: Cifrado AES con clave maestra
+- **Configuración CORS**: Políticas de origen cruzado configurables
+- **Limitación de Velocidad**: Throttling para prevenir abuso
+- **Verificaciones de Salud**: Monitoreo integral
+- **Contenedores No-root**: Imágenes Docker endurecidas en seguridad
+- **Aislamiento de Entorno**: Configuraciones separadas desarrollo/producción
 
-## 📚 API Documentation
+## 📚 Documentación de API
 
-Once the application is running, visit:
+Una vez que la aplicación esté ejecutándose, visita:
 - **Swagger UI**: http://localhost:3000/api-docs
-- **OpenAPI Spec**: http://localhost:3000/api-docs-json
+- **Especificación OpenAPI**: http://localhost:3000/api-docs-json
 
-### Key API Endpoints
+### Endpoints Clave de la API
 
-- `GET /api/password-manager/` - List all passwords
-- `POST /api/password-manager/` - Create new password
-- `PUT /api/password-manager/:id` - Update password
-- `DELETE /api/password-manager/:id` - Delete password
-- `POST /api/password-manager/:id/decrypt` - Decrypt password
+- `GET /api/password-manager/` - Listar todas las contraseñas
+- `POST /api/password-manager/` - Crear nueva contraseña
+- `PUT /api/password-manager/:id` - Actualizar contraseña
+- `DELETE /api/password-manager/:id` - Eliminar contraseña
+- `POST /api/password-manager/:id/decrypt` - Descifrar contraseña
 
-## 🛠️ Troubleshooting
+## 🛠️ Solución de Problemas
 
-### Common Issues
+### Problemas Comunes
 
-1. **Port Conflicts**:
+1. **Conflictos de Puerto**:
    ```bash
-   # Check what's using the ports
+   # Verificar qué está usando los puertos
    lsof -i :80 -i :3000 -i :5432 -i :6379
    ```
 
-2. **Database Connection Issues**:
+2. **Problemas de Conexión a Base de Datos**:
    ```bash
-   # Check database logs
+   # Verificar logs de base de datos
    docker-compose logs postgres
    ```
 
-3. **Frontend Not Loading**:
+3. **Frontend No Carga**:
    ```bash
-   # Check nginx logs
+   # Verificar logs de nginx
    docker-compose logs nginx
    ```
 
-4. **Build Failures**:
+4. **Fallos de Construcción**:
    ```bash
-   # Rebuild without cache
+   # Reconstruir sin cache
    docker-compose build --no-cache
    ```
 
-### Reset Everything
+### Reiniciar Todo
 
 ```bash
-# Stop and remove everything
+# Detener y eliminar todo
 docker-compose down -v --rmi all
 
-# Remove all containers and images
+# Eliminar todos los contenedores e imágenes
 docker system prune -a
 
-# Start fresh
+# Iniciar desde cero
 ./deploy/start.sh
 ```
 
-## 📝 Development Workflow
+## 📝 Flujo de Desarrollo
 
-### Adding New Features
+### Agregar Nuevas Características
 
-1. **Backend**: Add to `backend/src/`
-2. **Frontend**: Add to `frontend/src/`
-3. **Tests**: Add corresponding tests
-4. **Documentation**: Update this README
+1. **Backend**: Agregar a `backend/src/`
+2. **Frontend**: Agregar a `frontend/src/`
+3. **Pruebas**: Agregar pruebas correspondientes
+4. **Documentación**: Actualizar este README
 
-### Code Quality
+### Calidad del Código
 
 ```bash
-# Backend linting
+# Linting del backend
 cd backend && npm run lint
 
-# Frontend linting
+# Linting del frontend
 cd frontend && npm run lint
 
-# Format code
+# Formatear código
 cd backend && npm run format
 ```
 
-## 🤝 Contributing
+## 🤝 Contribuir
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+1. Fork del repositorio
+2. Crear rama de característica
+3. Hacer cambios
+4. Agregar pruebas
+5. Enviar pull request
 
-## 📄 License
+## 📄 Licencia
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Este proyecto está licenciado bajo la Licencia MIT - ver el archivo LICENSE para detalles.
 
-## 🆘 Support
+## 🆘 Soporte
 
-For support and questions:
+Para soporte y preguntas:
 
-- **Issues**: Create a GitHub issue
-- **Documentation**: Check this README and API docs
-- **Health Check**: Run `./deploy/health-check.sh`
+- **Issues**: Crear un issue en GitHub
+- **Documentación**: Revisar este README y docs de API
+- **Verificación de Salud**: Ejecutar `./deploy/health-check.sh`
 
 ---
 
-**Happy Coding! 🚀**
+**¡Feliz Programación! 🚀**

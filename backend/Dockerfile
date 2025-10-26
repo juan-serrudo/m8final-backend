@@ -1,66 +1,66 @@
-# Multi-stage build for NestJS backend
+# Construcción multi-etapa para backend NestJS
 FROM node:20-alpine AS base
 
-# Install dependencies needed for native modules
+# Instalar dependencias necesarias para módulos nativos
 RUN apk add --no-cache python3 make g++
 
-# Set working directory
+# Establecer directorio de trabajo
 WORKDIR /app
 
-# Copy package files
+# Copiar archivos de paquetes
 COPY package*.json ./
 COPY yarn.lock ./
 
-# Install dependencies
+# Instalar dependencias
 RUN yarn install --frozen-lockfile
 
-# Copy source code
+# Copiar código fuente
 COPY . .
 
-# Build the application
+# Construir la aplicación
 RUN yarn build
 
-# Production stage
+# Etapa de producción
 FROM node:20-alpine AS production
 
-# Install dependencies needed for SQLite and other native modules
+# Instalar dependencias necesarias para SQLite y otros módulos nativos
 RUN apk add --no-cache sqlite
 
-# Create non-root user for security
+# Crear usuario no-root para seguridad
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nestjs -u 1001 -G nodejs
 
-# Set working directory
+# Establecer directorio de trabajo
 WORKDIR /app
 
-# Copy package files
+# Copiar archivos de paquetes
 COPY package*.json ./
 COPY yarn.lock ./
 
-# Install only production dependencies
+# Instalar solo dependencias de producción
 RUN yarn install --production --frozen-lockfile && yarn cache clean
 
-# Copy built application from base stage
+# Copiar aplicación construida desde la etapa base
 COPY --from=base /app/dist ./dist
 COPY --from=base /app/src ./src
 
-# Create data directory for SQLite
+# Crear directorio de datos para SQLite
 RUN mkdir -p /app/data && \
     chown -R nestjs:nodejs /app
 
-# Switch to non-root user
+# Cambiar a usuario no-root
 USER nestjs
 
-# Expose port
+# Exponer puerto
 EXPOSE 3000
 
-# Health check
+# Verificación de salud
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
 
-# Environment variables
+# Variables de entorno
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Start the application
+# Iniciar la aplicación
 CMD ["node", "dist/main.js"]

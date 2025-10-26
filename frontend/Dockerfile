@@ -1,49 +1,49 @@
-# Multi-stage build for React + Vite frontend
+# Construcción multi-etapa para frontend React + Vite
 FROM node:20-alpine AS builder
 
-# Set working directory
+# Establecer directorio de trabajo
 WORKDIR /app
 
-# Copy package files
+# Copiar archivos de paquetes
 COPY package*.json ./
 
-# Install dependencies
+# Instalar dependencias
 RUN npm ci --only=production
 
-# Copy source code
+# Copiar código fuente
 COPY . .
 
-# Build the application
+# Construir la aplicación
 RUN npm run build
 
-# Production stage with nginx
+# Etapa de producción con nginx
 FROM nginx:alpine AS production
 
-# Copy custom nginx configuration
+# Copiar configuración personalizada de nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Copy built application from builder stage
+# Copiar aplicación construida desde la etapa builder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Create non-root user for security
+# Crear usuario no-root para seguridad
 RUN addgroup -g 1001 -S nginx && \
     adduser -S nginx -u 1001 -G nginx
 
-# Set proper permissions
+# Establecer permisos apropiados
 RUN chown -R nginx:nginx /usr/share/nginx/html && \
     chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /var/log/nginx && \
     chown -R nginx:nginx /etc/nginx/conf.d
 
-# Switch to non-root user
+# Cambiar a usuario no-root
 USER nginx
 
-# Expose port 80
+# Exponer puerto 80
 EXPOSE 80
 
-# Health check
+# Verificación de salud
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
 
-# Start nginx
+# Iniciar nginx
 CMD ["nginx", "-g", "daemon off;"]

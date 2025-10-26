@@ -1,31 +1,31 @@
 #!/bin/bash
 
-# Password Manager Monorepo - Stop Script
-# This script stops the entire application stack
+# Gestor de Contraseñas Monorepo - Script de Detención
+# Este script detiene toda la pila de aplicaciones
 
 set -e
 
-echo "🛑 Stopping Password Manager Monorepo..."
+echo "🛑 Deteniendo Gestor de Contraseñas Monorepo..."
 
-# Stop and remove containers
-echo "🐳 Stopping Docker services..."
+# Detener y eliminar contenedores
+echo "🐳 Deteniendo servicios Docker..."
 docker-compose down
 
-# Optional: Remove volumes (uncomment if you want to reset data)
-# echo "🗑️  Removing volumes..."
+# Opcional: Eliminar volúmenes (descomenta si quieres resetear datos)
+# echo "🗑️  Eliminando volúmenes..."
 # docker-compose down -v
 
-# Optional: Remove images (uncomment if you want to clean up images)
-# echo "🧹 Removing images..."
+# Opcional: Eliminar imágenes (descomenta si quieres limpiar imágenes)
+# echo "🧹 Eliminando imágenes..."
 # docker-compose down --rmi all
 
 echo ""
-echo "✅ Password Manager Monorepo has been stopped!"
+echo "✅ ¡El Gestor de Contraseñas Monorepo ha sido detenido!"
 echo ""
-echo "📋 To start again:"
+echo "📋 Para iniciar de nuevo:"
 echo "   ./deploy/start.sh"
 echo ""
-echo "🧹 To clean up everything (including data):"
+echo "🧹 Para limpiar todo (incluyendo datos):"
 echo "   docker-compose down -v --rmi all"
 echo ""
-echo "✨ Goodbye!"
+echo "✨ ¡Hasta luego!"

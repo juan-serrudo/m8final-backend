@@ -1,7 +1,7 @@
 {
   "name": "password-manager-monorepo",
   "version": "1.0.0",
-  "description": "Password Manager - Secure password management system with NestJS backend and React frontend",
+  "description": "Gestor de Contraseñas - Sistema seguro de gestión de contraseñas con backend NestJS y frontend React",
   "private": true,
   "author": "Juan Victor Serrudo Chavez",
   "license": "MIT",
@@ -35,21 +35,21 @@
     "npm": ">=9.0.0"
   },
   "keywords": [
-    "password-manager",
+    "gestor-contraseñas",
     "nestjs",
     "react",
     "vite",
     "docker",
     "monorepo",
-    "security",
-    "encryption"
+    "seguridad",
+    "cifrado"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-username/password-manager-monorepo.git"
+    "url": "git+https://github.com/tu-usuario/password-manager-monorepo.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/password-manager-monorepo/issues"
+    "url": "https://github.com/tu-usuario/password-manager-monorepo/issues"
   },
-  "homepage": "https://github.com/your-username/password-manager-monorepo#readme"
+  "homepage": "https://github.com/tu-usuario/password-manager-monorepo#readme"
 }
