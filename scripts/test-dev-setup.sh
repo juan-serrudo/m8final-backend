@@ -40,9 +40,9 @@ test_endpoint() {
     local url=$1
     local expected_status=$2
     local service_name=$3
-    
+
     print_message "Probando $service_name en $url..."
-    
+
     if curl -s -o /dev/null -w "%{http_code}" "$url" | grep -q "$expected_status"; then
         print_success "$service_name responde correctamente"
         return 0
@@ -55,20 +55,18 @@ test_endpoint() {
 print_message "Iniciando pruebas del entorno de desarrollo..."
 
 # Verificar que los archivos necesarios existan
-if [ ! -f "dev-start.sh" ]; then
-    print_error "Archivo dev-start.sh no encontrado"
+if [ ! -f "scripts/dev-start.sh" ]; then
+    print_error "Archivo scripts/dev-start.sh no encontrado"
     exit 1
 fi
 
-if [ ! -f "dev-stop.sh" ]; then
-    print_error "Archivo dev-stop.sh no encontrado"
+if [ ! -f "scripts/dev-stop.sh" ]; then
+    print_error "Archivo scripts/dev-stop.sh no encontrado"
     exit 1
 fi
 
-if [ ! -f "docker-compose.dev.yml" ]; then
-    print_error "Archivo docker-compose.dev.yml no encontrado"
-    exit 1
-fi
+# El docker-compose.dev.yml se crea dinámicamente por dev-start.sh
+# No necesitamos verificar que exista previamente
 
 print_success "Archivos de desarrollo encontrados"
 
@@ -80,8 +78,8 @@ if ! command -v docker >/dev/null 2>&1; then
     exit 1
 fi
 
-if ! command -v docker-compose >/dev/null 2>&1; then
-    print_error "Docker Compose no está instalado"
+if ! docker compose version >/dev/null 2>&1; then
+    print_error "Docker Compose no está disponible"
     exit 1
 fi
 
@@ -98,14 +96,14 @@ fi
 print_success "Todas las dependencias están instaladas"
 
 # Verificar que los scripts sean ejecutables
-if [ ! -x "dev-start.sh" ]; then
-    print_warning "Haciendo dev-start.sh ejecutable..."
-    chmod +x dev-start.sh
+if [ ! -x "scripts/dev-start.sh" ]; then
+    print_warning "Haciendo scripts/dev-start.sh ejecutable..."
+    chmod +x scripts/dev-start.sh
 fi
 
-if [ ! -x "dev-stop.sh" ]; then
-    print_warning "Haciendo dev-stop.sh ejecutable..."
-    chmod +x dev-stop.sh
+if [ ! -x "scripts/dev-stop.sh" ]; then
+    print_warning "Haciendo scripts/dev-stop.sh ejecutable..."
+    chmod +x scripts/dev-stop.sh
 fi
 
 print_success "Scripts de desarrollo están ejecutables"
@@ -135,7 +133,7 @@ print_success "Estructura del proyecto es correcta"
 
 # Verificar configuración de Docker Compose
 print_message "Verificando configuración de Docker Compose..."
-if docker-compose -f docker-compose.dev.yml config >/dev/null 2>&1; then
+if docker compose -f deploy/docker-compose.yml config >/dev/null 2>&1; then
     print_success "Configuración de Docker Compose es válida"
 else
     print_error "Configuración de Docker Compose tiene errores"
@@ -146,10 +144,10 @@ print_success "Todas las pruebas básicas pasaron!"
 print_message ""
 print_message "El entorno de desarrollo está listo para usar."
 print_message "Para iniciar el entorno de desarrollo, ejecuta:"
-print_message "  ./dev-start.sh"
+print_message "  ./scripts/dev-start.sh"
 print_message ""
 print_message "Para detener el entorno de desarrollo, ejecuta:"
-print_message "  ./dev-stop.sh"
+print_message "  ./scripts/dev-stop.sh"
 print_message ""
 print_message "Servicios que estarán disponibles:"
 print_message "  - Frontend: http://localhost:5173"
