@@ -65,7 +65,7 @@ echo "🌐 Verificaciones de Salud de Servicios:"
 echo "----------------------------------------"
 
 # Verificar salud del backend
-check_service "API Backend" "http://localhost:3000/health"
+check_service "API Backend" "http://localhost:3000/api/health"
 
 # Verificar salud del frontend
 check_service "Frontend" "http://localhost/health"

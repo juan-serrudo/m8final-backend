@@ -44,6 +44,9 @@ async function bootstrap() {
   // Interceptors globales
   app.useGlobalInterceptors(new ResponseFormatInterceptor());
 
+  // Configurar prefijo global para la API
+  app.setGlobalPrefix('api');
+
   if (envService.get('ENV_SWAGGER_SHOW')) configSwagger(app, packageJson);
 
   const port = envService.get<number>('port') || 3000;
