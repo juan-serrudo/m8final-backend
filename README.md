@@ -1,281 +1,377 @@
-# Gestor de Contraseñas - Backend
+# 🔐 Password Manager Monorepo
 
-## Descripción
+A secure password management system built with a modern monorepo architecture, featuring a NestJS backend, React frontend, and unified deployment with Docker.
 
-Sistema de gestión de contraseñas seguro desarrollado con NestJS, que implementa técnicas de criptografía avanzada para el almacenamiento seguro de credenciales. Migrado a PostgreSQL con Redis para caché y rate limiting.
+## 📁 Project Structure
 
-## Características de Seguridad
+```
+m8final-backend/
+├── backend/                 # NestJS Backend Application
+│   ├── src/                 # Source code
+│   ├── dist/                # Compiled JavaScript
+│   ├── test/                # Backend tests
+│   ├── Dockerfile           # Backend container configuration
+│   └── package.json         # Backend dependencies
+├── frontend/                # React + Vite Frontend Application
+│   ├── src/                 # Source code
+│   ├── public/              # Static assets
+│   ├── Dockerfile           # Frontend container configuration
+│   └── package.json         # Frontend dependencies
+├── nginx/                   # Nginx Configuration
+│   └── nginx.conf           # Reverse proxy configuration
+├── deploy/                  # Deployment Scripts
+│   ├── start.sh            # Start all services
+│   ├── stop.sh             # Stop all services
+│   └── health-check.sh      # Health monitoring
+├── docker-compose.yml       # Multi-service orchestration
+├── env.example             # Environment variables template
+└── README.md               # This file
+```
 
-- **Cifrado AES**: Las contraseñas se cifran usando el algoritmo AES antes de ser almacenadas
-- **Hash bcrypt**: Las claves maestras se hashean con bcrypt (12 rounds) para máxima seguridad
-- **Verificación de clave maestra**: Todas las operaciones sensibles requieren verificación de la clave maestra
-- **Almacenamiento seguro**: No se almacenan contraseñas en texto plano
-- **PostgreSQL**: Base de datos robusta con migraciones
-- **Redis**: Caché de alto rendimiento y rate limiting
-- **Health Checks**: Monitoreo de estado de servicios
+## 🚀 Quick Start
 
-## Tecnologías Utilizadas
+### Prerequisites
 
-- **NestJS 11**: Framework de Node.js
-- **TypeORM**: ORM para base de datos con migraciones
-- **PostgreSQL 16**: Base de datos principal
-- **Redis 7**: Caché y rate limiting
-- **bcryptjs**: Hashing de claves maestras
-- **crypto-js**: Cifrado AES de contraseñas
-- **@nestjs/terminus**: Health checks
-- **@nestjs/throttler**: Rate limiting
-- **Swagger**: Documentación de API
-- **class-validator**: Validación de DTOs
+- Docker and Docker Compose
+- Node.js 20+ (for local development)
+- Git
 
-## Instalación
-
-### Con Docker (Recomendado)
+### 1. Clone and Setup
 
 ```bash
-# Clonar el repositorio
+# Clone the repository
 git clone <repository-url>
 cd m8final-backend
 
-# Copiar archivo de entorno
+# Copy environment configuration
 cp env.example .env
 
-# Levantar todos los servicios (PostgreSQL, Redis, App)
-docker-compose up -d
-
-# Ejecutar migraciones
-docker-compose exec app npm run migration:run
-
-# Ejecutar seeds (datos de ejemplo)
-docker-compose exec app npm run seed:run
+# Review and update .env file if needed
 ```
 
-### Desarrollo Local
+### 2. Start the Application
 
 ```bash
-# Instalar dependencias
+# Make scripts executable
+chmod +x deploy/*.sh
+
+# Start all services
+./deploy/start.sh
+```
+
+### 3. Access the Application
+
+- **Frontend**: http://localhost:8080
+- **Backend API**: http://localhost:3000
+- **API Documentation**: http://localhost:3000/api-docs
+- **Health Check**: http://localhost:8080/health
+
+## 🛠️ Development
+
+### Backend Development
+
+```bash
+cd backend
+
+# Install dependencies
 npm install
 
-# Configurar variables de entorno
-cp env.example .env
-
-# Asegúrate de tener PostgreSQL y Redis ejecutándose localmente
-
-# Ejecutar migraciones
-npm run migration:run
-
-# Ejecutar seeds
-npm run seed:run
-
-# Desarrollo
+# Start in development mode
 npm run start:dev
 
-# Producción
-npm run build
-npm run start:prod
+# Run tests
+npm run test
+
+# Run migrations
+npm run migration:run
 ```
 
-## Variables de Entorno
+### Frontend Development
 
 ```bash
-# Puerto del servidor
-PORT=3000
+cd frontend
 
-# Tamaño máximo de requests
-APP_MAX_SIZE=10mb
+# Install dependencies
+npm install
 
-# Entorno (dev/prod)
-ENV_ENTORNO=dev
+# Start development server
+npm run dev
 
-# CORS (para producción)
-ENV_CORS=https://dominio1.com,https://dominio2.com
+# Run tests
+npm run test
 
-# Habilitar Swagger
-ENV_SWAGGER_SHOW=true
-
-# Sincronización de base de datos (solo desarrollo)
-ENV_SYNCHRONIZE=false
-
-# Configuración de PostgreSQL
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=password123
-DB_NAME=password_manager
-
-# Configuración de Redis
-REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_PASSWORD=
-REDIS_DB=0
-
-# Configuración de Rate Limiting
-THROTTLE_TTL=60
-THROTTLE_LIMIT=10
+# Build for production
+npm run build
 ```
 
-## Endpoints de la API
+### Full Stack Development
 
-### Gestión de Contraseñas
+For full-stack development with hot reloading:
 
-- `GET /password-manager` - Obtener todas las entradas (con caché)
-- `GET /password-manager/:id` - Obtener entrada específica (con caché)
-- `GET /password-manager/category/:category` - Filtrar por categoría
-- `POST /password-manager` - Crear nueva entrada (invalida caché)
-- `PUT /password-manager/:id` - Actualizar entrada (invalida caché)
-- `DELETE /password-manager/:id?masterKey=xxx` - Eliminar entrada (invalida caché)
-- `POST /password-manager/:id/decrypt` - Descifrar contraseña
+```bash
+# Terminal 1: Backend
+cd backend && npm run start:dev
+
+# Terminal 2: Frontend
+cd frontend && npm run dev
+
+# Terminal 3: Database (optional, if not using Docker)
+# Start PostgreSQL and Redis locally
+```
+
+## 🐳 Docker Services
+
+The application consists of the following services:
+
+### Core Services
+
+- **postgres**: PostgreSQL 16 database
+- **redis**: Redis 7 cache
+- **app**: NestJS backend API
+- **frontend**: React + Vite frontend
+- **nginx**: Reverse proxy and load balancer
+
+### Service Ports
+
+- **80**: Nginx (main entry point)
+- **8080**: Nginx (alternative port)
+- **3000**: Backend API (direct access)
+- **5432**: PostgreSQL
+- **6379**: Redis
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Key environment variables (see `env.example` for complete list):
+
+```bash
+# Backend Configuration
+NODE_ENV=production
+PORT=3000
+DB_HOST=postgres
+DB_PASSWORD=your_secure_password
+
+# Frontend Configuration
+VITE_API_BASE_URL=http://localhost:3000/api
+
+# Database Configuration
+POSTGRES_DB=password_manager
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_secure_password
+```
+
+### Nginx Configuration
+
+The nginx service acts as a reverse proxy:
+
+- `/api/*` → Backend API
+- `/api-docs` → API Documentation
+- `/health` → Health Check
+- `/*` → Frontend SPA (with fallback to index.html)
+
+## 🧪 Testing
+
+### Backend Tests
+
+```bash
+cd backend
+
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Test coverage
+npm run test:cov
+```
+
+### Frontend Tests
+
+```bash
+cd frontend
+
+# Run tests
+npm run test
+
+# Run tests with UI
+npm run test:ui
+
+# Test coverage
+npm run test:coverage
+```
 
 ### Health Checks
 
-- `GET /health` - Estado general del sistema
-- `GET /health/db` - Estado de la base de datos PostgreSQL
-- `GET /health/redis` - Estado de Redis
+```bash
+# Check all services
+./deploy/health-check.sh
 
-### Documentación Swagger
-
-Una vez iniciado el servidor, accede a:
-- **Swagger UI**: `http://localhost:3000/api`
-
-## Ejemplo de Uso
-
-### 1. Crear nueva entrada
-
-```json
-POST /password-manager
-{
-  "title": "Gmail Personal",
-  "description": "Cuenta principal de Gmail",
-  "username": "usuario@gmail.com",
-  "password": "miContraseñaSegura123!",
-  "url": "https://gmail.com",
-  "category": "Email",
-  "notes": "Cuenta creada en 2020",
-  "masterKey": "miClaveMaestraSegura123!"
-}
+# Check specific service
+curl http://localhost:8080/health
+curl http://localhost:3000/health
 ```
 
-### 2. Descifrar contraseña
+## 📊 Monitoring
 
-```json
-POST /password-manager/1/decrypt
-{
-  "masterKey": "miClaveMaestraSegura123!"
-}
-```
+### Health Endpoints
 
-### 3. Actualizar entrada
+- **Overall Health**: `GET /health`
+- **Backend Health**: `GET /api/health`
+- **Database Health**: Included in backend health check
+- **Cache Health**: Included in backend health check
 
-```json
-PUT /password-manager/1
-{
-  "title": "Gmail Personal Actualizado",
-  "masterKey": "miClaveMaestraSegura123!"
-}
-```
-
-## Arquitectura de Seguridad
-
-### Cifrado de Contraseñas
-- **Algoritmo**: AES (Advanced Encryption Standard)
-- **Clave**: Derivada de la clave maestra del usuario
-- **Resultado**: Contraseña cifrada almacenada en base de datos
-
-### Hash de Clave Maestra
-- **Algoritmo**: bcrypt
-- **Rounds**: 12 (configurable)
-- **Propósito**: Verificación segura sin almacenar la clave original
-
-### Flujo de Seguridad
-1. Usuario proporciona clave maestra
-2. Sistema verifica hash con bcrypt
-3. Si es válida, permite operaciones
-4. Para descifrar: usa AES con clave maestra
-5. Para cifrar: usa AES con clave maestra
-
-## Estructura del Proyecto
-
-```
-src/
-├── entitys/
-│   └── password-manager.entity.ts    # Entidad de base de datos
-├── dto/
-│   └── password-manager.dto.ts       # DTOs de validación
-├── modules/
-│   └── password-manager/
-│       ├── password-manager.controller.ts
-│       └── password-manager.service.ts
-├── providers/
-│   ├── password-manager.providers.ts # Proveedores de repositorio
-│   └── redis.providers.ts           # Proveedores de Redis
-├── services/
-│   └── cache.service.ts              # Servicio de caché
-├── health/
-│   ├── health.controller.ts          # Health checks
-│   └── health.module.ts
-├── configurations/
-│   ├── configuration.ts              # Configuración de entorno
-│   ├── data-source.ts               # Configuración TypeORM
-│   ├── throttler.config.ts          # Configuración rate limiting
-│   └── redis-storage.ts             # Storage Redis para throttler
-├── migrations/
-│   └── *.ts                          # Migraciones de base de datos
-└── seeds/
-    ├── *.ts                          # Seeds de datos
-    └── index.ts                      # Ejecutor de seeds
-```
-
-## Comandos de Migración y Seeds
+### Logs
 
 ```bash
-# Generar nueva migración
-npm run migration:generate -- src/migrations/NombreMigracion
+# View all logs
+docker-compose logs -f
 
-# Ejecutar migraciones
-npm run migration:run
-
-# Revertir última migración
-npm run migration:revert
-
-# Ejecutar seeds
-npm run seed:run
+# View specific service logs
+docker-compose logs -f app
+docker-compose logs -f frontend
+docker-compose logs -f nginx
 ```
 
-## Consideraciones de Seguridad
+## 🚀 Deployment
 
-1. **Nunca almacenar claves maestras en texto plano**
-2. **Usar HTTPS en producción**
-3. **Rate limiting implementado con Redis**
-4. **Caché con invalidación automática**
-5. **Health checks para monitoreo**
-6. **Logs de auditoría para operaciones sensibles**
-7. **Backup seguro de la base de datos**
+### Production Deployment
 
-## Características de Rendimiento
+1. **Update Environment Variables**:
+   ```bash
+   cp env.example .env
+   # Edit .env with production values
+   ```
 
-- **Caché Redis**: Respuestas rápidas para consultas frecuentes
-- **Rate Limiting**: Protección contra abuso de API
-- **Health Checks**: Monitoreo en tiempo real
-- **Migraciones**: Control de versiones de base de datos
-- **Seeds**: Datos de ejemplo para desarrollo
+2. **Build and Start**:
+   ```bash
+   ./deploy/start.sh
+   ```
 
-## Desarrollo
+3. **Verify Deployment**:
+   ```bash
+   ./deploy/health-check.sh
+   ```
+
+### Scaling
+
+To scale specific services:
 
 ```bash
-# Ejecutar en modo desarrollo
-npm run start:dev
+# Scale backend instances
+docker-compose up -d --scale app=3
 
-# Ejecutar tests
-npm run test
-
-# Tests e2e
-npm run test:e2e
-
-# Linting
-npm run lint
+# Scale frontend instances
+docker-compose up -d --scale frontend=2
 ```
 
-## Autor
+## 🔒 Security Features
 
-**Juan Victor Serrudo Chavez**
-- Email: juan.serrudo@ucb.edu.bo
-- Proyecto: Módulo 8 - Maestría UCB
+- **Password Encryption**: AES encryption with master key
+- **CORS Configuration**: Configurable cross-origin policies
+- **Rate Limiting**: Throttling to prevent abuse
+- **Health Checks**: Comprehensive monitoring
+- **Non-root Containers**: Security-hardened Docker images
+- **Environment Isolation**: Separate development/production configs
+
+## 📚 API Documentation
+
+Once the application is running, visit:
+- **Swagger UI**: http://localhost:3000/api-docs
+- **OpenAPI Spec**: http://localhost:3000/api-docs-json
+
+### Key API Endpoints
+
+- `GET /api/password-manager/` - List all passwords
+- `POST /api/password-manager/` - Create new password
+- `PUT /api/password-manager/:id` - Update password
+- `DELETE /api/password-manager/:id` - Delete password
+- `POST /api/password-manager/:id/decrypt` - Decrypt password
+
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+1. **Port Conflicts**:
+   ```bash
+   # Check what's using the ports
+   lsof -i :80 -i :3000 -i :5432 -i :6379
+   ```
+
+2. **Database Connection Issues**:
+   ```bash
+   # Check database logs
+   docker-compose logs postgres
+   ```
+
+3. **Frontend Not Loading**:
+   ```bash
+   # Check nginx logs
+   docker-compose logs nginx
+   ```
+
+4. **Build Failures**:
+   ```bash
+   # Rebuild without cache
+   docker-compose build --no-cache
+   ```
+
+### Reset Everything
+
+```bash
+# Stop and remove everything
+docker-compose down -v --rmi all
+
+# Remove all containers and images
+docker system prune -a
+
+# Start fresh
+./deploy/start.sh
+```
+
+## 📝 Development Workflow
+
+### Adding New Features
+
+1. **Backend**: Add to `backend/src/`
+2. **Frontend**: Add to `frontend/src/`
+3. **Tests**: Add corresponding tests
+4. **Documentation**: Update this README
+
+### Code Quality
+
+```bash
+# Backend linting
+cd backend && npm run lint
+
+# Frontend linting
+cd frontend && npm run lint
+
+# Format code
+cd backend && npm run format
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+For support and questions:
+
+- **Issues**: Create a GitHub issue
+- **Documentation**: Check this README and API docs
+- **Health Check**: Run `./deploy/health-check.sh`
+
+---
+
+**Happy Coding! 🚀**
