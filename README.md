@@ -19,12 +19,22 @@ m8final-backend/
 │   └── package.json         # Dependencias del frontend
 ├── nginx/                   # Configuración de Nginx
 │   └── nginx.conf           # Configuración del proxy inverso
-├── deploy/                  # Scripts de Despliegue
+├── scripts/                 # Scripts de Build y Despliegue
+│   ├── build_and_push.sh   # Build y push a Docker Hub
+│   ├── deploy.sh           # Despliegue en producción
+│   └── test-dev-setup.sh   # Verificación de entorno dev
+├── deploy/                  # Configuración de Despliegue
+│   ├── compose.release.yml # Compose para producción
 │   ├── start.sh            # Iniciar todos los servicios
 │   ├── stop.sh             # Detener todos los servicios
 │   └── health-check.sh      # Monitoreo de salud
-├── docker compose.yml       # Orquestación multi-servicio
+├── docker-compose.yml       # Orquestación multi-servicio (desarrollo)
+├── dev-start.sh            # Script de desarrollo local
+├── dev-stop.sh             # Script para detener desarrollo
 ├── env.example             # Plantilla de variables de entorno
+├── DOCKERHUB.md            # Documentación Docker Hub
+├── DEVELOPMENT.md          # Guía de desarrollo
+├── ADMINER.md             # Documentación Adminer
 └── README.md               # Este archivo
 ```
 
@@ -236,23 +246,85 @@ docker compose logs -f nginx
 
 ## 🚀 Despliegue
 
-### Despliegue en Producción
+### Despliegue Local (Desarrollo)
 
 1. **Actualizar Variables de Entorno**:
    ```bash
    cp env.example .env
-   # Editar .env con valores de producción
+   # Editar .env con valores de desarrollo
    ```
 
-2. **Construir e Iniciar**:
+2. **Iniciar Entorno de Desarrollo**:
    ```bash
-   ./deploy/start.sh
+   ./dev-start.sh
    ```
 
 3. **Verificar Despliegue**:
    ```bash
    ./deploy/health-check.sh
    ```
+
+### Despliegue con Docker Hub (Producción)
+
+Para desplegar usando imágenes pre-construidas desde Docker Hub:
+
+#### 1. Preparación de Docker Hub
+
+```bash
+# Crear repositorios en Docker Hub:
+# - <usuario>/m8final-backend
+# - <usuario>/m8final-frontend
+
+# Generar Access Token en Docker Hub
+# Configurar variables de entorno
+export DOCKERHUB_USER=tu_usuario
+export DOCKERHUB_TOKEN=tu_token
+export POSTGRES_PASSWORD=tu_password_seguro
+```
+
+#### 2. Construir y Publicar Imágenes
+
+```bash
+# Construir y publicar versión v1
+./scripts/build_and_push.sh v1
+
+# Construir y publicar versión v2
+./scripts/build_and_push.sh v2
+```
+
+#### 3. Desplegar en Producción
+
+```bash
+# Desplegar versión v1
+./scripts/deploy.sh v1
+
+# Cambiar a versión v2
+./scripts/deploy.sh v2
+
+# Ver estado de servicios
+./scripts/deploy.sh v1 status
+
+# Ver logs
+./scripts/deploy.sh v1 logs
+```
+
+#### 4. Verificar Despliegue
+
+```bash
+# Health check
+curl http://localhost:8080/health
+
+# Información de versión
+curl http://localhost:8080/version
+
+# Acceso al frontend
+curl http://localhost:8080/
+
+# Adminer (gestión de BD)
+curl http://localhost:8081
+```
+
+**📖 Para más detalles sobre Docker Hub, consulta [DOCKERHUB.md](./DOCKERHUB.md)**
 
 ### Escalado
 

@@ -146,4 +146,33 @@ export class AppController {
       };
     }
   }
+
+  @Get('version')
+  @ApiOperation({
+    summary: 'Información de versión de la aplicación',
+  })
+  getVersion() {
+    const packageJson = require('../package.json');
+    
+    return {
+      name: packageJson.name,
+      version: packageJson.version,
+      description: packageJson.description,
+      author: packageJson.author,
+      license: packageJson.license,
+      build: {
+        version: process.env.APP_VERSION || 'unknown',
+        date: process.env.BUILD_DATE || 'unknown',
+        node: process.version,
+        platform: process.platform,
+        arch: process.arch,
+      },
+      environment: {
+        nodeEnv: process.env.NODE_ENV || 'development',
+        entorno: process.env.ENV_ENTORNO || 'development',
+      },
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+    };
+  }
 }
