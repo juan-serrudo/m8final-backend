@@ -54,11 +54,11 @@ check_container() {
 echo ""
 echo "🐳 Estado de Contenedores Docker:"
 echo "----------------------------------"
-check_container "m8final-postgres"
-check_container "m8final-redis"
-check_container "m8final-backend"
-check_container "m8final-frontend"
-check_container "m8final-nginx"
+check_container "m9final-postgres"
+check_container "m9final-redis"
+check_container "m9final-backend"
+check_container "m9final-frontend"
+check_container "m9final-nginx"
 
 echo ""
 echo "🌐 Verificaciones de Salud de Servicios:"
@@ -83,13 +83,13 @@ echo "-------------------------"
 # Mostrar uso de recursos de contenedores
 echo "Uso de Recursos de Contenedores:"
 docker stats --no-stream --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}" \
-    m8final-postgres m8final-redis m8final-backend m8final-frontend m8final-nginx 2>/dev/null || echo "No se pudo obtener el uso de recursos"
+    m9final-postgres m9final-redis m9final-backend m9final-frontend m9final-nginx 2>/dev/null || echo "No se pudo obtener el uso de recursos"
 
 echo ""
 echo "🔍 Logs (últimas 10 líneas de cada servicio):"
 echo "---------------------------------------------"
 
-services=("m8final-postgres" "m8final-redis" "m8final-backend" "m8final-frontend" "m8final-nginx")
+services=("m9final-postgres" "m9final-redis" "m9final-backend" "m9final-frontend" "m9final-nginx")
 
 for service in "${services[@]}"; do
     echo ""

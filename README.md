@@ -5,7 +5,7 @@ Un sistema seguro de gestión de contraseñas construido con una arquitectura mo
 ## 📁 Estructura del Proyecto
 
 ```
-m8final-backend/
+m9final-backend/
 ├── 📁 apps/                    # Aplicaciones principales
 │   ├── backend/               # Backend NestJS
 │   └── frontend/              # Frontend React + Vite

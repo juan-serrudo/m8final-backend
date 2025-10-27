@@ -95,7 +95,7 @@ npm run dev
 ## Estructura del Proyecto
 
 ```
-m8final-backend/
+m9final-backend/
 ├── backend/                 # Aplicación NestJS
 │   ├── src/
 │   ├── package.json

@@ -5,7 +5,7 @@ Un sistema seguro de gestión de contraseñas construido con una arquitectura mo
 ## 📁 Estructura del Proyecto
 
 ```
-m8final-backend/
+m9final-backend/
 ├── 📁 apps/                    # Aplicaciones principales
 │   ├── backend/               # Backend NestJS
 │   └── frontend/              # Frontend React + Vite
@@ -53,7 +53,7 @@ m8final-backend/
 ```bash
 # Clonar el repositorio
 git clone <url-del-repositorio>
-cd m8final-backend
+cd m9final-backend
 
 # Copiar configuración de entorno
 cp env.example .env
@@ -274,8 +274,8 @@ Para desplegar usando imágenes pre-construidas desde Docker Hub:
 
 ```bash
 # Crear repositorios en Docker Hub:
-# - <usuario>/m8final-backend
-# - <usuario>/m8final-frontend
+# - <usuario>/m9final-backend
+# - <usuario>/m9final-frontend
 
 # Generar Access Token en Docker Hub
 # Configurar variables de entorno

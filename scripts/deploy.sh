@@ -110,10 +110,10 @@ fi
 # Función para verificar imágenes
 verify_images() {
     print_message "Verificando imágenes en Docker Hub..."
-    
-    local backend_image="$DOCKERHUB_USER/m8final-backend:$VERSION"
-    local frontend_image="$DOCKERHUB_USER/m8final-frontend:$VERSION"
-    
+
+    local backend_image="$DOCKERHUB_USER/m9final-backend:$VERSION"
+    local frontend_image="$DOCKERHUB_USER/m9final-frontend:$VERSION"
+
     # Verificar backend
     if docker manifest inspect "$backend_image" >/dev/null 2>&1; then
         print_success "Imagen backend encontrada: $backend_image"
@@ -122,7 +122,7 @@ verify_images() {
         print_message "Ejecuta primero: scripts/build_and_push.sh $VERSION"
         exit 1
     fi
-    
+
     # Verificar frontend
     if docker manifest inspect "$frontend_image" >/dev/null 2>&1; then
         print_success "Imagen frontend encontrada: $frontend_image"
@@ -148,17 +148,17 @@ show_logs() {
 # Función para verificar salud
 check_health() {
     print_message "Verificando salud de la aplicación..."
-    
+
     # Esperar un momento para que los servicios se inicien
     sleep 10
-    
+
     # Verificar health endpoint
     if curl -s http://localhost:8080/health >/dev/null 2>&1; then
         print_success "Health check: OK"
     else
         print_warning "Health check: No disponible aún"
     fi
-    
+
     # Verificar version endpoint
     if curl -s http://localhost:8080/version >/dev/null 2>&1; then
         print_success "Version endpoint: OK"
@@ -174,21 +174,21 @@ case $COMMAND in
     "up")
         print_message "Iniciando despliegue de versión $VERSION..."
         verify_images
-        
+
         # Detener versión anterior si existe
         print_message "Deteniendo servicios anteriores..."
         docker-compose -f "$COMPOSE_FILE" down 2>/dev/null || true
-        
+
         # Iniciar servicios
         print_message "Iniciando servicios..."
         docker-compose -f "$COMPOSE_FILE" up -d
-        
+
         # Mostrar estado
         show_status
-        
+
         # Verificar salud
         check_health
-        
+
         print_success "Despliegue completado!"
         print_message ""
         print_message "Servicios disponibles:"
@@ -201,13 +201,13 @@ case $COMMAND in
         print_message "Para ver logs: $0 $VERSION logs"
         print_message "Para ver estado: $0 $VERSION status"
         ;;
-        
+
     "down")
         print_message "Deteniendo servicios de versión $VERSION..."
         docker-compose -f "$COMPOSE_FILE" down
         print_success "Servicios detenidos"
         ;;
-        
+
     "restart")
         print_message "Reiniciando servicios de versión $VERSION..."
         docker-compose -f "$COMPOSE_FILE" restart
@@ -215,15 +215,15 @@ case $COMMAND in
         check_health
         print_success "Servicios reiniciados"
         ;;
-        
+
     "logs")
         show_logs
         ;;
-        
+
     "status")
         show_status
         ;;
-        
+
     *)
         print_error "Comando no reconocido: $COMMAND"
         print_message "Comandos disponibles: up, down, logs, status, restart"

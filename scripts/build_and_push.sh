@@ -36,7 +36,7 @@ show_help() {
     echo "Uso: $0 <version>"
     echo ""
     echo "Argumentos:"
-    echo "  version    Versión a construir y publicar (ej: v1, v2)"
+    echo "  version    Versión a construir y publicar (Ejemplo: v1, v2)"
     echo ""
     echo "Variables de entorno requeridas:"
     echo "  DOCKERHUB_USER    Usuario de Docker Hub"
@@ -48,8 +48,8 @@ show_help() {
     echo ""
     echo "Antes de ejecutar:"
     echo "  1. Crear repositorios en Docker Hub:"
-    echo "     - <usuario>/m8final-backend"
-    echo "     - <usuario>/m8final-frontend"
+    echo "     - <usuario>/m9final-backend"
+    echo "     - <usuario>/m9final-frontend"
     echo "  2. Generar Access Token en Docker Hub"
     echo "  3. Configurar variables de entorno:"
     echo "     export DOCKERHUB_USER=tu_usuario"
@@ -113,7 +113,7 @@ else
 fi
 
 # Crear builder multi-arch si no existe
-BUILDER_NAME="m8final-builder"
+BUILDER_NAME="m9final-builder"
 print_message "Configurando builder multi-architectura..."
 
 if ! docker buildx inspect "$BUILDER_NAME" >/dev/null 2>&1; then
@@ -143,13 +143,13 @@ build_and_push() {
     local service=$1
     local dockerfile=$2
     local context=$3
-    local image_name="$DOCKERHUB_USER/m8final-$service"
-    
+    local image_name="$DOCKERHUB_USER/m9final-$service"
+
     print_message "Construyendo y publicando: $image_name:$VERSION"
-    
+
     # Etiquetas OCI
     local labels=(
-        "--label" "org.opencontainers.image.title=m8final-$service"
+        "--label" "org.opencontainers.image.title=m9final-$service"
         "--label" "org.opencontainers.image.description=Password Manager $service"
         "--label" "org.opencontainers.image.version=$VERSION"
         "--label" "org.opencontainers.image.created=$BUILD_DATE"
@@ -158,7 +158,7 @@ build_and_push() {
         "--label" "org.opencontainers.image.vendor=Juan Victor Serrudo"
         "--label" "org.opencontainers.image.licenses=MIT"
     )
-    
+
     # Construir y publicar multi-arch
     docker buildx build \
         --platform linux/amd64,linux/arm64 \
@@ -168,7 +168,7 @@ build_and_push() {
         "${labels[@]}" \
         --push \
         "$context"
-    
+
     if [ $? -eq 0 ]; then
         print_success "Imagen publicada: $image_name:$VERSION"
         print_message "  Plataformas: linux/amd64, linux/arm64"
@@ -193,14 +193,14 @@ print_message "=== VERIFICANDO IMÁGENES PUBLICADAS ==="
 # Función para verificar imagen
 verify_image() {
     local service=$1
-    local image_name="$DOCKERHUB_USER/m8final-$service"
-    
+    local image_name="$DOCKERHUB_USER/m9final-$service"
+
     print_message "Verificando: $image_name:$VERSION"
-    
+
     # Obtener manifest
     if docker manifest inspect "$image_name:$VERSION" >/dev/null 2>&1; then
         print_success "Imagen verificada: $image_name:$VERSION"
-        
+
         # Mostrar información del manifest
         local manifest_info=$(docker manifest inspect "$image_name:$VERSION" 2>/dev/null)
         if [ $? -eq 0 ]; then
@@ -220,8 +220,8 @@ verify_image "frontend"
 print_success "=== BUILD Y PUSH COMPLETADO ==="
 print_message ""
 print_message "Imágenes publicadas:"
-print_message "  Backend:  docker.io/$DOCKERHUB_USER/m8final-backend:$VERSION"
-print_message "  Frontend: docker.io/$DOCKERHUB_USER/m8final-frontend:$VERSION"
+print_message "  Backend:  docker.io/$DOCKERHUB_USER/m9final-backend:$VERSION"
+print_message "  Frontend: docker.io/$DOCKERHUB_USER/m9final-frontend:$VERSION"
 print_message ""
 print_message "Para desplegar con estas imágenes:"
 print_message "  export VERSION=$VERSION"

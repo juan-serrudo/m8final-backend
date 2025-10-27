@@ -17,22 +17,22 @@ Este documento describe cómo construir, publicar y desplegar las imágenes de l
 
 Crea los siguientes repositorios públicos en Docker Hub:
 
-- `m8final-backend`
-- `m8final-frontend`
+- `m9final-backend`
+- `m9final-frontend`
 
 **Pasos:**
 1. Ve a [Docker Hub](https://hub.docker.com/)
 2. Inicia sesión con tu cuenta
 3. Haz clic en "Create Repository"
-4. Nombre: `m8final-backend`, Visibilidad: Public
-5. Repite para `m8final-frontend`
+4. Nombre: `m9final-backend`, Visibilidad: Public
+5. Repite para `m9final-frontend`
 
 ### 2. Generar Access Token
 
 **Pasos:**
 1. Ve a [Account Settings > Security](https://hub.docker.com/settings/security)
 2. Haz clic en "New Access Token"
-3. Nombre: `m8final-deployment`
+3. Nombre: `m9final-deployment`
 4. Permisos: Read, Write, Delete
 5. Copia el token generado
 
@@ -86,18 +86,18 @@ Para cada versión se generan:
 
 ```bash
 # Backend
-docker.io/<usuario>/m8final-backend:v1
-docker.io/<usuario>/m8final-backend:latest
+docker.io/<usuario>/m9final-backend:v1
+docker.io/<usuario>/m9final-backend:latest
 
 # Frontend
-docker.io/<usuario>/m8final-frontend:v1
-docker.io/<usuario>/m8final-frontend:latest
+docker.io/<usuario>/m9final-frontend:v1
+docker.io/<usuario>/m9final-frontend:latest
 ```
 
 #### Etiquetas OCI Incluidas
 
 ```yaml
-org.opencontainers.image.title: m8final-backend/frontend
+org.opencontainers.image.title: m9final-backend/frontend
 org.opencontainers.image.description: Password Manager backend/frontend
 org.opencontainers.image.version: v1
 org.opencontainers.image.created: 2024-01-15T10:30:00Z
@@ -300,7 +300,7 @@ echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin
 
 ```bash
 # Verificar que la imagen existe
-docker manifest inspect $DOCKERHUB_USER/m8final-backend:v1
+docker manifest inspect $DOCKERHUB_USER/m9final-backend:v1
 
 # Si no existe, construir y publicar
 ./scripts/build_and_push.sh v1

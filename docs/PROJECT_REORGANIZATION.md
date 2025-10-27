@@ -10,7 +10,7 @@ Reorganizar el proyecto para seguir las mejores prácticas de estructura de mono
 
 ### 1. **Estructura Anterior**
 ```
-m8final-backend/
+m9final-backend/
 ├── backend/                 # ❌ Aplicación en raíz
 ├── frontend/                # ❌ Aplicación en raíz
 ├── nginx/                   # ❌ Configuración en raíz
@@ -27,7 +27,7 @@ m8final-backend/
 
 ### 2. **Estructura Nueva (Buenas Prácticas)**
 ```
-m8final-backend/
+m9final-backend/
 ├── 📁 apps/                    # ✅ Aplicaciones principales
 │   ├── backend/               # ✅ Backend NestJS
 │   └── frontend/              # ✅ Frontend React + Vite

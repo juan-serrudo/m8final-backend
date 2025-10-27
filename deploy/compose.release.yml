@@ -19,7 +19,7 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
-    container_name: m8final-postgres-release
+    container_name: m9final-postgres-release
     environment:
       POSTGRES_DB: password_manager
       POSTGRES_USER: postgres
@@ -40,7 +40,7 @@ services:
   # Redis Cache
   redis:
     image: redis:7-alpine
-    container_name: m8final-redis-release
+    container_name: m9final-redis-release
     ports:
       - "6379:6379"
     volumes:
@@ -57,7 +57,7 @@ services:
   # Adminer Database Management
   adminer:
     image: adminer:4.8.1
-    container_name: m8final-adminer-release
+    container_name: m9final-adminer-release
     ports:
       - "8081:8080"
     environment:
@@ -78,8 +78,8 @@ services:
 
   # Backend Application (NestJS) - Imagen desde Docker Hub
   app:
-    image: ${DOCKERHUB_USER}/m8final-backend:${VERSION}
-    container_name: m8final-backend-release
+    image: ${DOCKERHUB_USER}/m9final-backend:${VERSION}
+    container_name: m9final-backend-release
     ports:
       - "3000:3000"
     environment:
@@ -123,8 +123,8 @@ services:
 
   # Frontend Application (React + Vite) - Imagen desde Docker Hub
   frontend:
-    image: ${DOCKERHUB_USER}/m8final-frontend:${VERSION}
-    container_name: m8final-frontend-release
+    image: ${DOCKERHUB_USER}/m9final-frontend:${VERSION}
+    container_name: m9final-frontend-release
     restart: unless-stopped
     networks:
       - app-network
@@ -138,7 +138,7 @@ services:
   # Nginx Reverse Proxy
   nginx:
     image: nginx:alpine
-    container_name: m8final-nginx-release
+    container_name: m9final-nginx-release
     ports:
       - "8080:80"
       - "8443:443"
