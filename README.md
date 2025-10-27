@@ -79,7 +79,7 @@ export DOCKERHUB_TOKEN=tu_token
 
 - **Frontend**: http://localhost:8080
 - **Backend API**: http://localhost:3000
-- **Swagger UI**: http://localhost:3000/api
+- **Swagger UI**: http://localhost:3000/api-docs
 - **Adminer**: http://localhost:8081
 - **Health Check**: http://localhost:8080/health
 - **Version Info**: http://localhost:8080/version
@@ -149,7 +149,3 @@ curl http://localhost:8080/version
 ## 📄 Licencia
 
 Este proyecto está licenciado bajo la Licencia MIT.
-
----
-
-**¡Feliz Programación! 🚀**

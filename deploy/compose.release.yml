@@ -13,7 +13,7 @@ version: '3.8'
 # Uso:
 #   export VERSION=v1
 #   export DOCKERHUB_USER=tu_usuario
-#   docker-compose -f deploy/compose.release.yml up -d
+#   docker compose -f deploy/compose.release.yml up -d
 
 services:
   # PostgreSQL Database

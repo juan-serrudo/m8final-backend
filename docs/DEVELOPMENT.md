@@ -56,10 +56,10 @@ Si prefieres configurar manualmente:
 
 ```bash
 # Iniciar PostgreSQL y Redis
-docker-compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml up -d
 
 # Verificar que estén corriendo
-docker-compose -f docker-compose.dev.yml ps
+docker compose -f docker-compose.dev.yml ps
 ```
 
 ### 2. Backend
@@ -185,7 +185,7 @@ kill -9 <PID>
 
 ```bash
 # Detener y eliminar contenedores y volúmenes
-docker-compose -f docker-compose.dev.yml down -v
+docker compose -f docker-compose.dev.yml down -v
 
 # Eliminar volúmenes específicos
 docker volume rm password-manager_postgres_dev_data
@@ -270,11 +270,11 @@ Ambas aplicaciones están configuradas para recarga automática:
 
 ```bash
 # Todos los servicios
-docker-compose -f docker-compose.dev.yml logs -f
+docker compose -f docker-compose.dev.yml logs -f
 
 # Servicio específico
-docker-compose -f docker-compose.dev.yml logs -f postgres-dev
-docker-compose -f docker-compose.dev.yml logs -f redis-dev
+docker compose -f docker-compose.dev.yml logs -f postgres-dev
+docker compose -f docker-compose.dev.yml logs -f redis-dev
 ```
 
 ### Debug del Backend

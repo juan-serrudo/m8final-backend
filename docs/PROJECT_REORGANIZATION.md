@@ -143,11 +143,11 @@ m9final-backend/
 ```bash
 # Antes
 cp env.example .env
-docker-compose -f docker-compose.yml up -d
+docker compose -f docker-compose.yml up -d
 
 # Ahora
 cp deploy/env.example .env
-docker-compose -f deploy/docker-compose.yml up -d
+docker compose -f deploy/docker-compose.yml up -d
 ```
 
 ### Aplicaciones

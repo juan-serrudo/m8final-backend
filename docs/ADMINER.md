@@ -51,10 +51,10 @@ O manualmente con Docker Compose:
 
 ```bash
 # Desarrollo
-docker-compose -f docker-compose.dev.yml up -d adminer-dev
+docker compose -f docker-compose.dev.yml up -d adminer-dev
 
 # Producción
-docker-compose up -d adminer
+docker compose up -d adminer
 ```
 
 ### 2. Acceder a Adminer
@@ -137,7 +137,7 @@ docker ps | grep adminer
 docker logs password-manager-adminer-dev
 
 # Reiniciar servicio
-docker-compose -f docker-compose.dev.yml restart adminer-dev
+docker compose -f docker-compose.dev.yml restart adminer-dev
 ```
 
 ### Error de conexión

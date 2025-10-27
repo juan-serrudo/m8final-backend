@@ -29,10 +29,10 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
         onRefresh();
         setShowForm(false);
       } else {
-        alert(`Error: ${response.message}`);
+        alert(`${response.message}`);
       }
     } catch (err: any) {
-      alert(`Error: ${err.response?.data?.message || err.message}`);
+      alert(`${err.response?.data?.message || err.message}`);
     }
   };
 
@@ -43,10 +43,10 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
         onRefresh();
         setEditingPassword(null);
       } else {
-        alert(`Error: ${response.message}`);
+        alert(`${response.message}`);
       }
     } catch (err: any) {
-      alert(`Error: ${err.response?.data?.message || err.message}`);
+      alert(`${err.response?.data?.message || err.message}`);
     }
   };
 
@@ -60,10 +60,10 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
       if (response.success) {
         onRefresh();
       } else {
-        alert(`Error: ${response.message}`);
+        alert(`${response.message}`);
       }
     } catch (err: any) {
-      alert(`Error: ${err.response?.data?.message || err.message}`);
+      alert(`${err.response?.data?.message || err.message}`);
     }
   };
 
@@ -96,7 +96,7 @@ const PasswordManager: React.FC<PasswordManagerProps> = ({
 
       {error && (
         <div className="error-message">
-          <p>Error: {error}</p>
+          <p>{error}</p>
         </div>
       )}
 

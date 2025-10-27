@@ -169,16 +169,16 @@ export DOCKERHUB_USER=tu_usuario
 export POSTGRES_PASSWORD=tu_password_seguro
 
 # Desplegar
-docker-compose -f deploy/compose.release.yml up -d
+docker compose -f deploy/compose.release.yml up -d
 
 # Ver estado
-docker-compose -f deploy/compose.release.yml ps
+docker compose -f deploy/compose.release.yml ps
 
 # Ver logs
-docker-compose -f deploy/compose.release.yml logs -f
+docker compose -f deploy/compose.release.yml logs -f
 
 # Detener
-docker-compose -f deploy/compose.release.yml down
+docker compose -f deploy/compose.release.yml down
 ```
 
 ## ✅ Verificación del Despliegue
@@ -314,7 +314,7 @@ lsof -i :8080
 lsof -i :8081
 
 # Detener servicios anteriores
-docker-compose -f deploy/compose.release.yml down
+docker compose -f deploy/compose.release.yml down
 ```
 
 #### 4. Problemas de Salud
@@ -334,25 +334,25 @@ docker-compose -f deploy/compose.release.yml down
 
 ```bash
 # Logs de todos los servicios
-docker-compose -f deploy/compose.release.yml logs
+docker compose -f deploy/compose.release.yml logs
 
 # Logs de servicio específico
-docker-compose -f deploy/compose.release.yml logs app
-docker-compose -f deploy/compose.release.yml logs frontend
-docker-compose -f deploy/compose.release.yml logs nginx
+docker compose -f deploy/compose.release.yml logs app
+docker compose -f deploy/compose.release.yml logs frontend
+docker compose -f deploy/compose.release.yml logs nginx
 
 # Logs en tiempo real
-docker-compose -f deploy/compose.release.yml logs -f
+docker compose -f deploy/compose.release.yml logs -f
 ```
 
 ### Limpieza
 
 ```bash
 # Detener y eliminar contenedores
-docker-compose -f deploy/compose.release.yml down
+docker compose -f deploy/compose.release.yml down
 
 # Eliminar volúmenes (¡CUIDADO! Elimina datos)
-docker-compose -f deploy/compose.release.yml down -v
+docker compose -f deploy/compose.release.yml down -v
 
 # Limpiar imágenes no utilizadas
 docker image prune -f
@@ -411,7 +411,7 @@ POSTGRES_PASSWORD=password_muy_seguro
 EOF
 
 # Usar archivo de entorno
-docker-compose -f deploy/compose.release.yml --env-file .env.production up -d
+docker compose -f deploy/compose.release.yml --env-file .env.production up -d
 ```
 
 ---

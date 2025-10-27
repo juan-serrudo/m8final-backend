@@ -22,17 +22,23 @@ async function bootstrap() {
 
   const envService = app.get(ConfigService);
   const packageJson = envService.get('packageJson');
+  // app.enableCors({
+  //   origin: getCors({
+  //     env_mode: envService.get('ENV_ENTORNO') || '',
+  //     env_cors: envService.get('ENV_CORS') || '',
+  //   }),
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  //   credentials: true,
+  // });
+
   app.enableCors({
-    origin: getCors({
-      env_mode: envService.get('ENV_ENTORNO') || '',
-      env_cors: envService.get('ENV_CORS') || '',
-    }),
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: false,
   });
 
-  app.use(json({ limit: envService.get('appMaxSize') || '10mb' }));
-  app.use(urlencoded({ limit: envService.get('appMaxSize') || '10mb', extended: true }));
+  app.use(json({ limit: envService.get('APP_MAX_SIZE') || '10mb' }));
+  app.use(urlencoded({ limit: envService.get('APP_MAX_SIZE') || '10mb', extended: true }));
 
   // Global validation pipe
   app.useGlobalPipes(new ValidationPipe({
@@ -49,7 +55,7 @@ async function bootstrap() {
 
   if (envService.get('ENV_SWAGGER_SHOW')) configSwagger(app, packageJson);
 
-  const port = envService.get<number>('port') || 3000;
+  const port = envService.get<number>('PORT') || 3000;
   await app.listen(port, '0.0.0.0').then(async () => {
     console.log(bold.blue('🚀 API is listening ON PORT', (await app.getUrl())));
   });

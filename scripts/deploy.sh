@@ -136,13 +136,13 @@ verify_images() {
 # Función para mostrar estado
 show_status() {
     print_message "Estado de los servicios:"
-    docker-compose -f "$COMPOSE_FILE" ps
+    docker compose -f "$COMPOSE_FILE" ps
 }
 
 # Función para mostrar logs
 show_logs() {
     print_message "Mostrando logs de los servicios:"
-    docker-compose -f "$COMPOSE_FILE" logs --tail=50 -f
+    docker compose -f "$COMPOSE_FILE" logs --tail=50 -f
 }
 
 # Función para verificar salud
@@ -177,11 +177,11 @@ case $COMMAND in
 
         # Detener versión anterior si existe
         print_message "Deteniendo servicios anteriores..."
-        docker-compose -f "$COMPOSE_FILE" down 2>/dev/null || true
+        docker compose -f "$COMPOSE_FILE" down 2>/dev/null || true
 
         # Iniciar servicios
         print_message "Iniciando servicios..."
-        docker-compose -f "$COMPOSE_FILE" up -d
+        docker compose -f "$COMPOSE_FILE" up -d
 
         # Mostrar estado
         show_status
@@ -204,13 +204,13 @@ case $COMMAND in
 
     "down")
         print_message "Deteniendo servicios de versión $VERSION..."
-        docker-compose -f "$COMPOSE_FILE" down
+        docker compose -f "$COMPOSE_FILE" down
         print_success "Servicios detenidos"
         ;;
 
     "restart")
         print_message "Reiniciando servicios de versión $VERSION..."
-        docker-compose -f "$COMPOSE_FILE" restart
+        docker compose -f "$COMPOSE_FILE" restart
         show_status
         check_health
         print_success "Servicios reiniciados"

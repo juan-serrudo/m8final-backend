@@ -35,7 +35,7 @@ print_message "Deteniendo entorno de desarrollo..."
 # Detener contenedores de desarrollo
 if [ -f "docker-compose.dev.yml" ]; then
     print_message "Deteniendo contenedores Docker..."
-    docker-compose -f docker-compose.dev.yml down
+    docker compose -f docker-compose.dev.yml down
     print_success "Contenedores Docker detenidos"
 else
     print_warning "Archivo docker-compose.dev.yml no encontrado"
@@ -66,6 +66,6 @@ pkill -f "vite" 2>/dev/null || true
 print_success "Entorno de desarrollo detenido completamente"
 print_message ""
 print_message "Para limpiar completamente los datos de desarrollo:"
-print_message "  docker-compose -f docker-compose.dev.yml down -v"
+print_message "  docker compose -f docker-compose.dev.yml down -v"
 print_message "  docker volume rm password-manager_postgres_dev_data password-manager_redis_dev_data"
 print_message ""

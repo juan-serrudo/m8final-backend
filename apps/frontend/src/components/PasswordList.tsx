@@ -7,11 +7,11 @@ interface PasswordListProps {
   onDecrypt: (password: PasswordEntry) => void;
 }
 
-const PasswordList: React.FC<PasswordListProps> = ({ 
-  passwords, 
-  onEdit, 
-  onDelete, 
-  onDecrypt 
+const PasswordList: React.FC<PasswordListProps> = ({
+  passwords,
+  onEdit,
+  onDelete,
+  onDecrypt
 }) => {
   const handleDelete = (password: PasswordEntry) => {
     const masterKey = prompt('Ingresa tu clave maestra para eliminar esta contraseña:');
@@ -76,7 +76,7 @@ const PasswordList: React.FC<PasswordListProps> = ({
                 <label>Usuario:</label>
                 <span className="password-value">{password.username}</span>
               </div>
-              
+
               <div className="password-field">
                 <label>Contraseña:</label>
                 <span className="password-value password-masked">
@@ -93,23 +93,23 @@ const PasswordList: React.FC<PasswordListProps> = ({
             </div>
 
             <div className="password-card-actions">
-              <button 
+              <button
                 className="btn btn-sm btn-primary"
                 onClick={() => onDecrypt(password)}
                 title="Ver Contraseña"
               >
                 👁️ Ver
               </button>
-              
-              <button 
+
+              <button
                 className="btn btn-sm btn-secondary"
                 onClick={() => onEdit(password)}
                 title="Editar Contraseña"
               >
                 ✏️ Editar
               </button>
-              
-              <button 
+
+              <button
                 className="btn btn-sm btn-danger"
                 onClick={() => handleDelete(password)}
                 title="Eliminar Contraseña"

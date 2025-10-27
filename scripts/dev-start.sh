@@ -125,7 +125,7 @@ if [ ! -f ".env" ]; then
     print_success "Archivo .env creado para desarrollo"
 fi
 
-# Crear docker-compose para servicios de desarrollo
+# Crear docker compose para servicios de desarrollo
 print_message "Creando configuración Docker Compose para desarrollo..."
 cat > docker-compose.dev.yml << 'EOF'
 version: '3.8'
