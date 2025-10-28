@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: password-manager-api-v1
+  namespace: default
+  labels:
+    app: password-manager-api
+    version: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: password-manager-api
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: password-manager-api
+        version: v1
+    spec:
+      containers:
+      - name: password-manager-api
+        image: mi-registry/password-manager-api:v1
+        # Alternativa: puedes usar ealen/echo-server:0.6.0 para pruebas
+        # image: ealen/echo-server:0.6.0
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+          name: http
+        env:
+        - name: PORT
+          value: "3000"
+        # Referencia al Secret para las variables de entorno
+        envFrom:
+        - secretRef:
+            name: password-manager-api-secrets
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+

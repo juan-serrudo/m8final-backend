@@ -1,0 +1,21 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: default
+  namespace: metallb-system
+spec:
+  addresses:
+  # IMPORTANTE: Ajusta este rango según tu red de Docker
+  # Para obtener el subnet: docker network inspect kind | grep -A 10 "Subnet"
+  # Ejemplo: si subnet es 172.18.0.0/16, usa un rango como 172.18.255.200-172.18.255.250
+  - 172.18.255.200-172.18.255.250
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: default
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - default
+

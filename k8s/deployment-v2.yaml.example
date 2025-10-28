@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: password-manager-api
+  namespace: default
+  labels:
+    app: password-manager-api
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: password-manager-api
+  template:
+    metadata:
+      labels:
+        app: password-manager-api
+        version: v2  # Cambiado a v2
+    spec:
+      containers:
+      - name: password-manager-api
+        image: mi-registry/password-manager-api:v2  # Cambiado a v2
+        # Alternativa: puedes usar ealen/echo-server:0.6.0 para pruebas
+        # image: ealen/echo-server:0.6.0
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+          name: http
+        env:
+        - name: PORT
+          value: "3000"
+        # Referencia al Secret para las variables de entorno
+        envFrom:
+        - secretRef:
+            name: password-manager-api-secrets
+        # Readiness Probe: verifica que el contenedor esté listo para recibir tráfico
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        # Liveness Probe: verifica que el contenedor esté funcionando correctamente
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+
