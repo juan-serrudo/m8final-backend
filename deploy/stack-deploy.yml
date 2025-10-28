@@ -34,6 +34,7 @@ services:
     environment:
       POSTGRES_DB: password_manager
       POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
     secrets:
       - postgres_password
     volumes:
@@ -137,7 +138,7 @@ services:
       replicas: 3
       placement:
         constraints:
-          - node.role == worker
+          - node.role == manager
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -174,6 +175,7 @@ services:
       - DB_PORT=5432
       - DB_USER=postgres
       - DB_NAME=password_manager
+      - DB_PASSWORD=password123
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_DB=0
@@ -184,7 +186,7 @@ services:
     configs:
       - source: app_config
         target: /app/.env
-        mode: 0400
+        mode: 0444
     networks:
       - app-network
     healthcheck:
@@ -201,7 +203,7 @@ services:
       replicas: 2
       placement:
         constraints:
-          - node.role == worker
+          - node.role == manager
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -302,21 +304,10 @@ networks:
   app-network:
     driver: overlay
     attachable: true
-    encrypted: true
-    driver_opts:
-      encrypted: "true"
 
 # Volúmenes persistentes
 volumes:
   postgres_data:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /opt/password-manager/postgres-data
   redis_data:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /opt/password-manager/redis-data

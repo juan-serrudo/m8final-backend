@@ -48,26 +48,50 @@ fi
 
 # Crear directorios para volúmenes persistentes
 print_status "Creando directorios para volúmenes persistentes..."
-sudo mkdir -p /opt/password-manager/postgres-data
-sudo mkdir -p /opt/password-manager/redis-data
-sudo chown -R 999:999 /opt/password-manager/postgres-data
-sudo chown -R 999:999 /opt/password-manager/redis-data
-print_success "Directorios de volúmenes creados"
+if [ -w "/opt" ]; then
+    mkdir -p /opt/password-manager/postgres-data
+    mkdir -p /opt/password-manager/redis-data
+    chown -R 999:999 /opt/password-manager/postgres-data 2>/dev/null || true
+    chown -R 999:999 /opt/password-manager/redis-data 2>/dev/null || true
+    print_success "Directorios de volúmenes creados"
+else
+    print_warning "No se tienen permisos para crear directorios en /opt"
+    print_warning "Los volúmenes usarán el directorio local ./data"
+    mkdir -p ./data/postgres-data
+    mkdir -p ./data/redis-data
+    print_success "Directorios locales de volúmenes creados"
+fi
 
 # Crear secrets
 print_status "Creando secrets..."
-echo "password123" | docker secret create postgres_password -
-echo "password123" | docker secret create db_password -
-print_success "Secrets creados correctamente"
+if ! docker secret ls | grep -q "postgres_password"; then
+    echo "password123" | docker secret create postgres_password -
+    print_success "Secret postgres_password creado"
+else
+    print_warning "Secret postgres_password ya existe"
+fi
+
+if ! docker secret ls | grep -q "db_password"; then
+    echo "password123" | docker secret create db_password -
+    print_success "Secret db_password creado"
+else
+    print_warning "Secret db_password ya existe"
+fi
 
 # Crear configs
 print_status "Creando configs..."
 
 # Config para nginx
-docker config create nginx_config ./config/nginx/nginx.conf
+if ! docker config ls | grep -q "nginx_config"; then
+    docker config create nginx_config ./nginx-swarm.conf
+    print_success "Config nginx_config creado"
+else
+    print_warning "Config nginx_config ya existe"
+fi
 
 # Config para aplicación (variables de entorno)
-cat > /tmp/app.env << EOF
+if ! docker config ls | grep -q "app_config"; then
+    cat > /tmp/app.env << EOF
 NODE_ENV=production
 PORT=3000
 ENV_ENTORNO=production
@@ -86,21 +110,46 @@ THROTTLE_TTL=60
 THROTTLE_LIMIT=10
 EOF
 
-docker config create app_config /tmp/app.env
-rm /tmp/app.env
-
-print_success "Configs creados correctamente"
+    docker config create app_config /tmp/app.env
+    rm /tmp/app.env
+    print_success "Config app_config creado"
+else
+    print_warning "Config app_config ya existe"
+fi
 
 # Construir imágenes
 print_status "Construyendo imágenes Docker..."
-docker build -t password-manager-backend:latest ./apps/backend
-docker build -t password-manager-frontend:latest ./apps/frontend
-print_success "Imágenes construidas correctamente"
+
+# Construir imagen del backend
+print_status "Construyendo imagen del backend..."
+if docker build -t password-manager-backend:latest ../apps/backend; then
+    print_success "Imagen del backend construida correctamente"
+else
+    print_error "Error al construir imagen del backend"
+    exit 1
+fi
+
+# Construir imagen del frontend
+print_status "Construyendo imagen del frontend..."
+if docker build -t password-manager-frontend:latest ../apps/frontend; then
+    print_success "Imagen del frontend construida correctamente"
+else
+    print_error "Error al construir imagen del frontend"
+    exit 1
+fi
 
 # Desplegar stack
 print_status "Desplegando stack..."
-docker stack deploy -c stack-deploy.yml password-manager
-print_success "Stack desplegado correctamente"
+if docker stack deploy -c stack-deploy.yml password-manager; then
+    print_success "Stack desplegado correctamente"
+else
+    print_error "Error al desplegar el stack"
+    exit 1
+fi
+
+# Esperar a que los servicios estén listos
+print_status "Esperando a que los servicios estén listos..."
+sleep 10
 
 # Mostrar estado del stack
 print_status "Estado del stack:"
