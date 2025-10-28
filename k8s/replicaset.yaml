@@ -21,8 +21,6 @@ spec:
       containers:
       - name: password-manager-api
         image: mi-registry/password-manager-api:v1
-        # Alternativa: puedes usar ealen/echo-server:0.6.0 para pruebas
-        # image: ealen/echo-server:0.6.0
         ports:
         - containerPort: 3000
           protocol: TCP
@@ -30,7 +28,6 @@ spec:
         env:
         - name: PORT
           value: "3000"
-        # Referencia al Secret para las variables de entorno
         envFrom:
         - secretRef:
             name: password-manager-api-secrets

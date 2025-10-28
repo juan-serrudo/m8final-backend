@@ -5,9 +5,6 @@ metadata:
   namespace: default
   labels:
     app: password-manager-api
-  # Anotación para MetalLB (opcional, descomentar si es necesario)
-  # annotations:
-  #   metallb.universe.tf/address-pool: default
 spec:
   type: LoadBalancer
   ports:
